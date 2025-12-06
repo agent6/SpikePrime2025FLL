@@ -122,4 +122,4 @@ This lesson makes `spin_right` a dependable tool for fast, in‑place orientatio
 
 ---
 
-[Back to Lessons Index](index.html)
+

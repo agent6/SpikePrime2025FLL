@@ -120,4 +120,4 @@ This lesson completes the pivot set by solidifying how to use inside right pivot
 
 ---
 
-[Back to Lessons Index](index.html)
+

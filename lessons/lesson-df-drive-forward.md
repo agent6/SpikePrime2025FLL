@@ -119,4 +119,4 @@ Activity:
 
 ---
 
-[Back to Lessons Index](index.html)
+

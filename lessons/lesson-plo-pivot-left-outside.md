@@ -120,4 +120,4 @@ This lesson builds intuition for `pivot_left_outside`, which pairs with the othe
 
 ---
 
-[Back to Lessons Index](index.html)
+

@@ -141,4 +141,4 @@ These pivot skills will be used throughout missions to line up for attachments a
 
 ---
 
-[Back to Lessons Index](index.html)
+

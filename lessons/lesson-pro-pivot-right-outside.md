@@ -120,4 +120,4 @@ This lesson complements the left outside pivot (PLO) and helps build a complete 
 
 ---
 
-[Back to Lessons Index](index.html)
+

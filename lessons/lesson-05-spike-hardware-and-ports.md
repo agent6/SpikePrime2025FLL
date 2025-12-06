@@ -82,4 +82,4 @@ Emphasize: *“When we forget how a Spike function works, the Tufts docs are our
 
 ---
 
-[Back to Lessons Index](index.html)
+

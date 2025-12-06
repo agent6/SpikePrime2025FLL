@@ -120,4 +120,4 @@ Have students:
 
 ---
 
-[Back to Lessons Index](index.html)
+

@@ -120,4 +120,4 @@ Explain: *“We turn until yaw reaches the target angle, then stop for a precise
 
 ---
 
-[Back to Lessons Index](index.html)
+

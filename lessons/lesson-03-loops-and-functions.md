@@ -144,4 +144,4 @@ This mini‑project builds the mental model of **functions** and **loops** that 
 
 ---
 
-[Back to Lessons Index](index.html)
+
