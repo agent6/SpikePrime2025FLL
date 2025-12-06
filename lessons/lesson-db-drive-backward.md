@@ -35,7 +35,113 @@ Parameter meanings (same as forward):
 
 ---
 
-## 2. Proportional Correction in Reverse
+## 2. Inside the Full `drive_backward` Method
+
+Here is a simplified version of the full method in `master.py`:
+
+```python
+def drive_backward(min_speed, max_speed, target_degrees, kP=0.5):
+    ACCELERATE = 1
+    CRUISE = 2
+    DECELERATE = 3
+    FINISH = 4
+
+    motion_sensor.reset_yaw(0)
+    motor.reset_relative_position(port.A, 0)
+
+    left_speed = min_speed
+    right_speed = min_speed
+    phase = ACCELERATE
+    speed_step_counter = 1
+    accel_degrees = 0
+
+    while True:
+        distance_travelled = motor.relative_position(port.A)
+
+        # 1) Phase state machine: accelerate → cruise → decelerate → finish
+        if phase == ACCELERATE:
+            # Slowly ramp up both wheel speeds
+            speed_step_counter += 1
+            if speed_step_counter == 4:
+                left_speed += 1
+                right_speed += 1
+                speed_step_counter = 1
+
+            # If we have already gone at least half the distance,
+            # skip the cruise phase and start decelerating early.
+            if distance_travelled >= (target_degrees / 2):
+                phase = DECELERATE
+
+            # When we hit max_speed, move to CRUISE and remember
+            # how many degrees acceleration took.
+            if left_speed >= max_speed:
+                phase = CRUISE
+                left_speed = max_speed
+                right_speed = max_speed
+                accel_degrees = distance_travelled
+
+        elif phase == CRUISE:
+            # Stay at max speed until we are close enough to the target
+            # that it's time to decelerate. We use accel_degrees to
+            # roughly mirror the distance spent accelerating.
+            if distance_travelled >= (target_degrees - (2 * accel_degrees)):
+                phase = DECELERATE
+
+        elif phase == DECELERATE:
+            # Gradually ramp speeds back down toward min_speed
+            speed_step_counter += 1
+            if speed_step_counter == 4:
+                left_speed -= 1
+                right_speed -= 1
+                speed_step_counter = 1
+            if left_speed <= min_speed:
+                left_speed = min_speed
+                right_speed = min_speed
+                phase = FINISH
+
+        if phase == FINISH:
+            # Hold at min_speed until we reach the final distance
+            left_speed = min_speed
+            right_speed = min_speed
+
+        # 2) Heading correction using yaw and kP
+        yaw = motion_sensor.tilt_angles()[0]
+        correction = int(kP * yaw)
+
+        left_command = left_speed + correction
+        right_command = right_speed - correction
+
+        # 3) Clamp motor commands so they never exceed max_speed
+        max_cmd = max_speed
+        left_command = max(-max_cmd, min(max_cmd, left_command))
+        right_command = max(-max_cmd, min(max_cmd, right_command))
+
+        # 4) Send commands to motors, reversed relative to drive_forward
+        motor.run(port.A, left_command)
+        motor.run(port.E, -right_command)
+
+        # 5) Stop when the distance target is reached
+        if distance_travelled >= target_degrees:
+            motor.stop(port.A, stop=motor.BRAKE)
+            motor.stop(port.E, stop=motor.BRAKE)
+            return False
+```
+
+Walk-through:
+- Uses the same **phase** state machine as `drive_forward` (ACCELERATE/CRUISE/DECELERATE/FINISH).
+- `distance_travelled` now uses the left motor encoder in the **forward** direction, but we reverse the motor commands to drive backward.
+- In ACCELERATE, both wheel speeds ramp up gradually until:
+  - Either we reach half the target distance (skip CRUISE → DECELERATE), or
+  - We reach `max_speed` (enter CRUISE and remember `accel_degrees`).
+- CRUISE keeps `left_speed`/`right_speed` at `max_speed` until we are “2 × accel_degrees” from the target, then switches to DECELERATE.
+- DECELERATE ramps speeds down step-by-step back to `min_speed`.
+- Yaw-based correction (`kP * yaw`) runs every loop, just like in `drive_forward`, but the base directions are reversed.
+- Commands are clamped to `±max_speed` to keep speeds under control.
+- The loop ends when `distance_travelled >= target_degrees` and brakes both motors.
+
+---
+
+## 3. Proportional Correction in Reverse
 
 Inside `drive_backward`, we still use yaw:
 
@@ -57,7 +163,7 @@ Thought exercise:
 
 ---
 
-## 3. Simple Field Test for `drive_backward`
+## 4. Simple Field Test for `drive_backward`
 
 Create or reuse a mission that calls `drive_backward`:
 
@@ -77,7 +183,7 @@ On the field:
 
 ---
 
-## 4. Tuning `drive_backward` – Distance and Straightness
+## 5. Tuning `drive_backward` – Distance and Straightness
 
 Adjusting **distance**:
 - Increase `target_degrees` to go farther backward.
@@ -105,7 +211,7 @@ Suggested tuning table:
 
 ---
 
-## 5. Connecting to Real Missions
+## 6. Connecting to Real Missions
 
 Backward moves are common when:
 - Leaving a model after interacting.
@@ -117,5 +223,4 @@ Activity:
 - Copy the tuned `drive_backward` call into the corresponding mission function (e.g., after a model hit in `mission_4` or `mission_5`).  
 
 ---
-
 
