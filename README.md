@@ -16,8 +16,8 @@ The code is written using the Spike Python runtime (v3), `runloop`, and the buil
   - `port.A` – left drive motor
   - `port.E` – right drive motor
 - Mechanisms:
-  - `port.C` – elevator / attachment motor (controlled by `runElev`)
-  - `port.B` – tower / secondary attachment motor (controlled by `runTower`)
+  - `port.C` – left attachment motor (controlled by `left_attachment_*` helpers)
+  - `port.B` – right attachment motor (controlled by `right_attachment_*` helpers)
 - Sensors:
   - Built‑in **motion sensor** used for yaw/tilt and pivot turns.
 
@@ -104,20 +104,16 @@ All pivot functions reset yaw at the start and then spin a single drive motor un
   - Spins the right motor on `port.E` backward while the left motor stays stopped.
   - Stops when yaw reaches `target_angle_degrees`.
 
-- `backRightPivot(minSpeed, degrees)`
-  - Spins the **right** motor on `port.E` backward.
-  - Pivots the robot **backwards to the right** until yaw is `-degrees`.
-
 ### Spin Turn Functions
 
 - `spin_right(speed, target_angle_degrees)`
   - Spins the robot in place to the **right**.
-  - Left motor on `port.A` runs forward, right motor on `port.E` runs backward.
+  - Uses opposite wheel directions (relative to forward drive) to rotate around the center.
   - Stops when yaw reaches `-target_angle_degrees`.
 
 - `spin_left(speed, target_angle_degrees)`
   - Spins the robot in place to the **left**.
-  - Right motor on `port.E` runs forward, left motor on `port.A` runs backward.
+  - Uses opposite wheel directions (relative to forward drive) to rotate around the center.
   - Stops when yaw reaches `target_angle_degrees`.
 
 ### Mechanism Functions
@@ -128,9 +124,9 @@ All pivot functions reset yaw at the start and then spin a single drive motor un
   - Typical use: raising/lowering an elevator or left-side attachment.
 
 - `left_attachment_down(degrees, speed=1110)`
-  - Runs the left attachment motor on `port.C` for `degrees` encoder degrees in the **down** direction.
-  - Internally uses negative degrees to reverse the motion.
-  - Typical use: returning a left-side attachment to its starting position.
+  - Moves the left attachment motor on `port.C` in the **down** direction using encoder feedback.
+  - Uses a loop and negative speed to reverse the motion until the requested degrees are reached.
+  - Typical use: returning a left-side attachment to its starting (home) position.
 
 - `right_attachment_up(degrees, speed)`
   - Runs the right attachment motor on `port.B` for `degrees` encoder degrees at the given `speed`.
@@ -138,8 +134,8 @@ All pivot functions reset yaw at the start and then spin a single drive motor un
   - Typical use: raising or rotating a right-side tower/attachment.
 
 - `right_attachment_down(degrees, speed)`
-  - Runs the right attachment motor on `port.B` for `degrees` encoder degrees in the **down** direction.
-  - Internally uses negative degrees to reverse the motion.
+  - Moves the right attachment motor on `port.B` in the **down** direction using encoder feedback.
+  - Uses a loop and negative speed to reverse the motion until the requested degrees are reached.
   - Typical use: lowering or returning a right-side tower/attachment to its starting position.
 
 ---
@@ -152,7 +148,7 @@ All pivot functions reset yaw at the start and then spin a single drive motor un
 
 2. **Create/import the project**
    - Open the Spike App and create a **Python** project.
-   - Copy the contents of `mission1.py` into the project or transfer the file directly if your environment allows it.
+   - Copy the contents of `master.py` into the project or transfer the file directly if your environment allows it.
 
 3. **Connect the motors and check ports**
    - Plug the drive motors into `port.A` and `port.E`.
@@ -161,26 +157,29 @@ All pivot functions reset yaw at the start and then spin a single drive motor un
 
 4. **Run the program**
    - Place the robot on the field in the correct starting position.
-   - Start the `mission1` program on the hub.
-   - The robot will wait for the motion sensor to be stable, then execute the programmed movement (currently `drive_forward(10, 500, 1000)`).
+   - Start the `master` program on the hub.
+   - The robot will wait for the motion sensor to be stable, then enter the **mission selector**:
+     - The selected mission number (0–9) is shown on the light matrix.
+     - The top-left LED is lit to indicate selector mode.
+     - RIGHT button: move to the next mission number.
+     - LEFT button: run the currently selected mission.
 
 ---
 
 ## Customizing for Missions
 
-- To change the **main run**:
-  - Edit the call inside `main()` in `mission1.py`.
-  - Example: adjust distance or speed:
-    - `drive_forward(20, 400, 800)` for a shorter, slightly slower drive.
-  - Or chain multiple actions for a mission:
-    - `drive_forward(...)` → `pivot_left_outside(...)` → `left_attachment_up(...)` → etc.
+- To change what a **mission number** does:
+  - Edit the corresponding `mission_n` function in `master.py` (e.g., `mission_4`).
+  - Chain helpers to build a full run, e.g.:  
+    `drive_forward(...)` → `pivot_left_outside(...)` → `left_attachment_up(...)` → `drive_backward(...)` → `left_attachment_down(...)`.
 
 - To tune **turn angles**:
-  - Adjust the `target_angle_degrees` parameter in any pivot function call (`pivot_left_outside`, `pivot_left_inside`, `pivot_right_outside`, `pivot_right_inside`).
-  - Test on the field and refine the degree values until the robot consistently hits the FLL models.
+  - Adjust the `target_angle_degrees` parameter in any pivot or spin function call (`pivot_left_outside`, `pivot_left_inside`, `pivot_right_outside`, `pivot_right_inside`, `spin_left`, `spin_right`).
+  - Test on the field and refine the degree values until the robot consistently hits/aligns with FLL models.
 
 - To adjust **mechanism movement**:
   - Change `degrees` and `speed` values in calls to `left_attachment_up/down` and `right_attachment_up/down`.
+  - Use `MotorIsStopped(port.C)` or `MotorIsStopped(port.B)` with `runloop.until` when you need to wait for an attachment to finish moving.
 
 Keep notes of which parameter sets correspond to specific FLL missions so you can quickly restore working runs during tournaments.
 
