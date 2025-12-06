@@ -3,111 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <title>Spike Prime FLL Lessons</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 2rem;
-      max-width: 900px;
-    }
-    h1, h2, h3 {
-      margin-top: 1.5rem;
-    }
-    ul {
-      margin-top: 0.25rem;
-    }
-    code {
-      background: #f4f4f4;
-      padding: 0.1rem 0.2rem;
-      border-radius: 3px;
-    }
-    .section {
-      margin-bottom: 1.25rem;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Spike Prime FLL Lessons</h1>
-  <p>
-    This is the lesson landing page for our 2025 FLL Spike Prime Python v3 training.
-    Start with the basic Python lessons, then move into robot-specific lessons and
-    individual helper lessons from <code>master.py</code>.
-  </p>
+  <div>
+    <h1>Spike Prime FLL Lessons</h1>
+    <p class="subtitle">
+      2025 FLL Spike Prime Python v3 training sequence. Start with Python basics,
+      then progress into robot motion, attachments, and full missions using
+      <code>master.py</code>.
+    </p>
+  </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Phase 1 – Python Basics (Online IDE)</h2>
     <ul>
-      <li><a href="lesson-01-python-foundations.md">Lesson 1 – Python Foundations</a></li>
-      <li><a href="lesson-02-control-flow.md">Lesson 2 – Control Flow</a></li>
-      <li><a href="lesson-03-loops-and-functions.md">Lesson 3 – Loops and Functions</a></li>
-      <li><a href="lesson-04-lists-and-dicts.md">Lesson 4 – Lists and Dictionaries (Stretch)</a></li>
+      <li><a href="lesson-01-python-foundations.html">Lesson 1 – Python Foundations</a></li>
+      <li><a href="lesson-02-control-flow.html">Lesson 2 – Control Flow</a></li>
+      <li><a href="lesson-03-loops-and-functions.html">Lesson 3 – Loops and Functions</a></li>
+      <li><a href="lesson-04-lists-and-dicts.html">Lesson 4 – Lists and Dictionaries (Stretch)</a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Phase 2 – Spike Hardware & Runtime</h2>
     <ul>
-      <li><a href="lesson-05-spike-hardware-and-ports.md">Lesson 5 – Spike Hardware &amp; Ports</a></li>
-      <li><a href="lesson-06-motors-encoders-motion-sensor.md">Lesson 6 – Motors, Encoders, and Motion Sensor</a></li>
-      <li><a href="lesson-07-async-and-runloop.md">Lesson 7 – Async and <code>runloop</code></a></li>
+      <li><a href="lesson-05-spike-hardware-and-ports.html">Lesson 5 – Spike Hardware &amp; Ports</a></li>
+      <li><a href="lesson-06-motors-encoders-motion-sensor.html">Lesson 6 – Motors, Encoders, and Motion Sensor</a></li>
+      <li><a href="lesson-07-async-and-runloop.html">Lesson 7 – Async and <code>runloop</code></a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Phase 3 – Core Robot Movement & Attachments</h2>
     <ul>
-      <li><a href="lesson-08-straight-driving.md">Lesson 8 – Straight Driving</a></li>
-      <li><a href="lesson-09-pivot-turns.md">Lesson 9 – Pivot Turns</a></li>
-      <li><a href="lesson-10-spin-turns.md">Lesson 10 – Spin Turns</a></li>
-      <li><a href="lesson-11-attachments.md">Lesson 11 – Attachments</a></li>
-      <li><a href="lesson-12-async-motion-helpers.md">Lesson 12 – Async Motion Helpers</a></li>
-      <li><a href="lesson-13-detecting-motor-stop.md">Lesson 13 – Detecting Motor Stop</a></li>
-      <li><a href="lesson-14-mission-selector-ux.md">Lesson 14 – Mission Selector UX</a></li>
-      <li><a href="lesson-15-mission-functions.md">Lesson 15 – Mission Functions</a></li>
+      <li><a href="lesson-08-straight-driving.html">Lesson 8 – Straight Driving</a></li>
+      <li><a href="lesson-09-pivot-turns.html">Lesson 9 – Pivot Turns</a></li>
+      <li><a href="lesson-10-spin-turns.html">Lesson 10 – Spin Turns</a></li>
+      <li><a href="lesson-11-attachments.html">Lesson 11 – Attachments</a></li>
+      <li><a href="lesson-12-async-motion-helpers.html">Lesson 12 – Async Motion Helpers</a></li>
+      <li><a href="lesson-13-detecting-motor-stop.html">Lesson 13 – Detecting Motor Stop</a></li>
+      <li><a href="lesson-14-mission-selector-ux.html">Lesson 14 – Mission Selector UX</a></li>
+      <li><a href="lesson-15-mission-functions.html">Lesson 15 – Mission Functions</a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Per-Helper Lessons – Driving & Turning</h2>
     <ul>
-      <li><a href="lesson-df-drive-forward.md">Lesson DF – <code>drive_forward</code></a></li>
-      <li><a href="lesson-db-drive-backward.md">Lesson DB – <code>drive_backward</code></a></li>
-      <li><a href="lesson-plo-pivot-left-outside.md">Lesson PLO – <code>pivot_left_outside</code></a></li>
-      <li><a href="lesson-pli-pivot-left-inside.md">Lesson PLI – <code>pivot_left_inside</code></a></li>
-      <li><a href="lesson-pro-pivot-right-outside.md">Lesson PRO – <code>pivot_right_outside</code></a></li>
-      <li><a href="lesson-pri-pivot-right-inside.md">Lesson PRI – <code>pivot_right_inside</code></a></li>
-      <li><a href="lesson-sl-spin-left.md">Lesson SL – <code>spin_left</code></a></li>
-      <li><a href="lesson-sr-spin-right.md">Lesson SR – <code>spin_right</code></a></li>
+      <li><a href="lesson-df-drive-forward.html">Lesson DF – <code>drive_forward</code></a></li>
+      <li><a href="lesson-db-drive-backward.html">Lesson DB – <code>drive_backward</code></a></li>
+      <li><a href="lesson-plo-pivot-left-outside.html">Lesson PLO – <code>pivot_left_outside</code></a></li>
+      <li><a href="lesson-pli-pivot-left-inside.html">Lesson PLI – <code>pivot_left_inside</code></a></li>
+      <li><a href="lesson-pro-pivot-right-outside.html">Lesson PRO – <code>pivot_right_outside</code></a></li>
+      <li><a href="lesson-pri-pivot-right-inside.html">Lesson PRI – <code>pivot_right_inside</code></a></li>
+      <li><a href="lesson-sl-spin-left.html">Lesson SL – <code>spin_left</code></a></li>
+      <li><a href="lesson-sr-spin-right.html">Lesson SR – <code>spin_right</code></a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Per-Helper Lessons – Attachments</h2>
     <ul>
-      <li><a href="lesson-lau-left-attachment-up.md">Lesson LAU – <code>left_attachment_up</code></a></li>
-      <li><a href="lesson-lad-left-attachment-down.md">Lesson LAD – <code>left_attachment_down</code></a></li>
-      <li><a href="lesson-rau-right-attachment-up.md">Lesson RAU – <code>right_attachment_up</code></a></li>
-      <li><a href="lesson-rad-right-attachment-down.md">Lesson RAD – <code>right_attachment_down</code></a></li>
+      <li><a href="lesson-lau-left-attachment-up.html">Lesson LAU – <code>left_attachment_up</code></a></li>
+      <li><a href="lesson-lad-left-attachment-down.html">Lesson LAD – <code>left_attachment_down</code></a></li>
+      <li><a href="lesson-rau-right-attachment-up.html">Lesson RAU – <code>right_attachment_up</code></a></li>
+      <li><a href="lesson-rad-right-attachment-down.html">Lesson RAD – <code>right_attachment_down</code></a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Per-Helper Lessons – Async Helpers</h2>
     <ul>
-      <li><a href="lesson-adf-async-drive-forward.md">Lesson ADF – <code>async_drive_forward</code></a></li>
-      <li><a href="lesson-adb-async-drive-backward.md">Lesson ADB – <code>async_drive_backward</code></a></li>
-      <li><a href="lesson-alau-async-left-attachment-up.md">Lesson ALAU – <code>async_left_attachment_up</code></a></li>
-      <li><a href="lesson-alad-async-left-attachment-down.md">Lesson ALAD – <code>async_left_attachment_down</code></a></li>
-      <li><a href="lesson-arau-async-right-attachment-up.md">Lesson ARAU – <code>async_right_attachment_up</code></a></li>
-      <li><a href="lesson-arad-async-right-attachment-down.md">Lesson ARAD – <code>async_right_attachment_down</code></a></li>
+      <li><a href="lesson-adf-async-drive-forward.html">Lesson ADF – <code>async_drive_forward</code></a></li>
+      <li><a href="lesson-adb-async-drive-backward.html">Lesson ADB – <code>async_drive_backward</code></a></li>
+      <li><a href="lesson-alau-async-left-attachment-up.html">Lesson ALAU – <code>async_left_attachment_up</code></a></li>
+      <li><a href="lesson-alad-async-left-attachment-down.html">Lesson ALAD – <code>async_left_attachment_down</code></a></li>
+      <li><a href="lesson-arau-async-right-attachment-up.html">Lesson ARAU – <code>async_right_attachment_up</code></a></li>
+      <li><a href="lesson-arad-async-right-attachment-down.html">Lesson ARAD – <code>async_right_attachment_down</code></a></li>
     </ul>
   </div>
 
-  <div class="section">
+  <div class="toc-section">
     <h2>Per-Helper Lessons – Control Helpers & Missions</h2>
     <ul>
-      <li><a href="lesson-mis-motor-is-stopped.md">Lesson MIS – <code>MotorIsStopped</code></a></li>
-      <li><a href="lesson-sel-mission-selector.md">Lesson SEL – <code>mission_selector</code></a></li>
-      <li><a href="lesson-mx-mission-0-9.md">Lesson Mx – <code>mission_0</code>–<code>mission_9</code></a></li>
+      <li><a href="lesson-mis-motor-is-stopped.html">Lesson MIS – <code>MotorIsStopped</code></a></li>
+      <li><a href="lesson-sel-mission-selector.html">Lesson SEL – <code>mission_selector</code></a></li>
+      <li><a href="lesson-mx-mission-0-9.html">Lesson Mx – <code>mission_0</code>–<code>mission_9</code></a></li>
     </ul>
   </div>
 
@@ -123,4 +105,3 @@
   </div>
 </body>
 </html>
-

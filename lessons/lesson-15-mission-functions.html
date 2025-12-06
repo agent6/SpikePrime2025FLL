@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-15-mission-functions</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<h1 id="lesson-15-mission-functions-mission_0mission_9">Lesson 15 –
+Mission Functions (<code>mission_0</code>–<code>mission_9</code>)</h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code></p>
+</blockquote>
+<h2 id="lesson-goals">Lesson Goals</h2>
+<p>By the end of this lesson, students will be able to: - Explain the
+structure of <code>mission_0</code>–<code>mission_9</code> in
+<code>master.py</code>. - Map each mission to the helper it currently
+tests. - Replace a test mission with a <strong>real FLL run</strong>
+while keeping the selector system.</p>
+<hr />
+<h2 id="mission-function-structure">1. Mission Function Structure</h2>
+<p>Open <code>master.py</code> and find the mission functions:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_0():</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Mission 0: test forward drive.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">200</span>, <span class="dv">360</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_1():</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>Pattern: - Each mission is an <strong>async function</strong>:
+<code>async def mission_n():</code> - Each uses one or more helper
+functions (drive, pivot, spin, attachments). - Each ends with
+<code>return</code> so control goes back to
+<code>mission_selector()</code>.</p>
+<p>This structure makes it easy to: - Test helpers individually. - Swap
+out the body of any mission for a real FLL run.</p>
+<hr />
+<h2 id="what-each-mission-tests-today">2. What Each Mission Tests
+Today</h2>
+<p>Current mapping in <code>master.py</code>:</p>
+<ul>
+<li><code>mission_0</code> –
+<code>drive_forward(20, 200, 360)</code></li>
+<li><code>mission_1</code> –
+<code>drive_backward(20, 200, 360)</code></li>
+<li><code>mission_2</code> –
+<code>pivot_left_outside(200, 45)</code></li>
+<li><code>mission_3</code> –
+<code>pivot_left_inside(200, 45)</code></li>
+<li><code>mission_4</code> –
+<code>pivot_right_outside(200, 45)</code></li>
+<li><code>mission_5</code> –
+<code>pivot_right_inside(200, 45)</code></li>
+<li><code>mission_6</code> – <code>spin_left(200, 90)</code></li>
+<li><code>mission_7</code> – <code>spin_right(200, 90)</code></li>
+<li><code>mission_8</code> – left attachment up/down:
+<ul>
+<li><code>left_attachment_up(180, speed=400)</code></li>
+<li>wait for <code>MotorIsStopped(port.C)</code></li>
+<li><code>left_attachment_down(180, speed=400)</code></li>
+</ul></li>
+<li><code>mission_9</code> – right attachment up/down:
+<ul>
+<li><code>right_attachment_up(180, speed=400)</code></li>
+<li>wait for <code>MotorIsStopped(port.B)</code></li>
+<li><code>right_attachment_down(180, speed=400)</code></li>
+</ul></li>
+</ul>
+<p>Activity: - Run through missions 0–9 using the selector. - For each,
+have students say which helper they see in action.</p>
+<hr />
+<h2 id="activity-replace-a-test-mission-with-a-real-fll-run">3. Activity
+– Replace a Test Mission with a Real FLL Run</h2>
+<p>Goal: Turn one of the test missions (for example
+<code>mission_4</code>) into a real FLL mission.</p>
+<h3 id="step-1-choose-a-mission-slot">Step 1 – Choose a Mission
+Slot</h3>
+<p>Pick a mission number that: - Is easy to reach on the selector (e.g.,
+2, 3, or 4). - You’re comfortable “owning” as a specific FLL field
+run.</p>
+<p>Example: we’ll use <code>mission_4</code>.</p>
+<h3 id="step-2-plan-the-fll-run">Step 2 – Plan the FLL Run</h3>
+<p>On paper, sketch the sequence: - Drive out of base. - Turn toward a
+model. - Use an attachment. - Return to base or a safe area.</p>
+<p>Example plan: 1. Drive straight to the model. 2. Pivot right to face
+it. 3. Lift left attachment. 4. Drop it back down. 5. Drive backward to
+base.</p>
+<h3 id="step-3-implement-the-run-in-mission_4">Step 3 – Implement the
+Run in <code>mission_4</code></h3>
+<p>Modify <code>mission_4</code> in <code>master.py</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_4():</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Mission 4: real FLL run – example.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Drive out of base</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">720</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Pivot right to face model</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    pivot_right_outside(<span class="dv">200</span>, <span class="dv">45</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Lift attachment to interact with model</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    left_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.C))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Lower attachment</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    left_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. Drive back to base</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    drive_backward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">720</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<h3 id="step-4-field-testing-and-tuning">Step 4 – Field Testing and
+Tuning</h3>
+<p>On the FLL field: - Run the newly updated <code>mission_4</code>
+several times. - Adjust: - Drive distances
+(<code>target_degrees</code>). - Pivot angles. - Attachment degrees.</p>
+<p>Encourage: - Write comments above <code>mission_4</code> describing
+the real mission:<br />
+<code>"Mission 4 – Model X delivery run"</code>. - Keep a notebook or
+table of tuned values for each field element.</p>
+<hr />
+<h2 id="next-steps">4. Next Steps</h2>
+<p>Once one mission slot is a real FLL run: - Repeat the process for
+other missions (e.g., <code>mission_5</code> for a different model). -
+Keep at least one or two “test missions” (e.g., 0 and 1) for ongoing
+calibration of straight driving or attachments.</p>
+<p>The goal is to end up with: - A <strong>mission selector</strong>
+where each number corresponds to a clear, documented FLL run. - A team
+that knows which mission number runs which part of the field, and how to
+re‑tune it if the robot changes.</p>
+<hr />
+<p><a href="index.html">Back to Lessons Index</a></p>
+</body>
+</html>

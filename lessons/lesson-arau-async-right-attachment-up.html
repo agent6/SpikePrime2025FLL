@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-arau-async-right-attachment-up</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<h1 id="lesson-arau-async_right_attachment_up">Lesson ARAU –
+<code>async_right_attachment_up</code></h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code></p>
+</blockquote>
+<h2 id="lesson-goals">Lesson Goals</h2>
+<p>By the end of this lesson, students will be able to: - Explain what
+<code>async_right_attachment_up(degrees, speed)</code> does. -
+Understand how it differs from the blocking
+<code>right_attachment_up</code>. - Use
+<code>async_right_attachment_up</code> in parallel with driving using
+<code>runloop.create_task</code>.</p>
+<hr />
+<h2 id="what-async_right_attachment_up-does">1. What
+<code>async_right_attachment_up</code> Does</h2>
+<p>Open <code>master.py</code> and find:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> async_right_attachment_up(degrees, speed):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Move the right attachment up in a non-blocking way for use in parallel tasks.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    motor.reset_relative_position(port.B, <span class="dv">0</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> motor.relative_position(port.B) <span class="op">&lt;</span> degrees:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        motor.run(port.B, speed)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> runloop.sleep_ms(<span class="dv">10</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.B, stop<span class="op">=</span>motor.BRAKE)</span></code></pre></div>
+<p>Summarize behavior: - Resets the encoder on <code>port.B</code>
+(right attachment motor) to 0. - Runs the motor in the
+<strong>upward</strong> direction until
+<code>relative_position(port.B)</code> reaches <code>degrees</code>. -
+Uses <code>await runloop.sleep_ms(10)</code> in the loop so other tasks
+can run. - Stops the motor with brake when done.</p>
+<p>Key difference from <code>right_attachment_up</code>: -
+<code>right_attachment_up</code> is blocking
+(<code>run_for_degrees</code>). - <code>async_right_attachment_up</code>
+is <strong>non-blocking</strong>, meant for parallel use.</p>
+<hr />
+<h2 id="why-use-an-async-up-helper">2. Why Use an Async “Up”
+Helper?</h2>
+<p>Explain: - We often want the right attachment to move while the robot
+is moving: - For example, raising a tower as we drive toward a model. -
+With a blocking helper, the sequence must be: - Drive, then move
+attachment, or - Move attachment, then drive. - With
+<code>async_right_attachment_up</code>, we can: - Start driving and
+lifting at the same time.</p>
+<p>Reinforce: - The <code>await runloop.sleep_ms(10)</code> call inside
+the loop is what allows other async tasks to run.</p>
+<hr />
+<h2 id="basic-usage-solo-async-lift">3. Basic Usage – Solo Async
+Lift</h2>
+<p>You can test <code>async_right_attachment_up</code> by itself:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_async_right_up_test():</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> async_right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<p>On the robot: - Confirm that the right attachment moves to the
+expected “up” position. - Compare behavior and final position to
+<code>right_attachment_up(180, 400)</code>.</p>
+<hr />
+<h2 id="parallel-use-drive-while-raising-the-right-attachment">4.
+Parallel Use – Drive While Raising the Right Attachment</h2>
+<p>Example: drive forward while raising the right attachment:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_drive_and_lift_right():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    drive_task <span class="op">=</span> runloop.create_task(async_drive_forward(<span class="dv">150</span>, <span class="dv">720</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    tower_task <span class="op">=</span> runloop.create_task(async_right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> drive_task</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> tower_task</span></code></pre></div>
+<p>Explain: - Both tasks start at the same time. - The robot moves while
+the right attachment lifts. - When both <code>await</code> calls finish,
+the robot should be at its target position with the right attachment
+up.</p>
+<p>Field activity: - Adjust <code>target_degrees</code> and
+<code>degrees</code> so that: - The attachment reaches the correct
+height at the right time. - The robot is in the right place to use the
+attachment effectively.</p>
+<hr />
+<h2 id="good-practices">5. Good Practices</h2>
+<p>Suggestions: - Use <code>async_right_attachment_up</code> when
+parallel motion saves time or simplifies alignment. - Prefer
+<code>right_attachment_up</code> when no parallel action is needed, to
+keep missions simple. - Test combined drive + lift missions many times
+on the field: - Watch for collisions while driving and lifting. - Tune
+both speeds and degrees until the sequence is smooth and reliable.</p>
+<hr />
+<p><a href="index.html">Back to Lessons Index</a></p>
+</body>
+</html>

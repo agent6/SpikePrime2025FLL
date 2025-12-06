@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-rau-right-attachment-up</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<h1 id="lesson-rau-right_attachment_up">Lesson RAU –
+<code>right_attachment_up</code></h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code></p>
+</blockquote>
+<h2 id="lesson-goals">Lesson Goals</h2>
+<p>By the end of this lesson, students will be able to: - Explain what
+<code>right_attachment_up(degrees, speed)</code> does. - Choose
+appropriate <code>degrees</code> and <code>speed</code> values for the
+right-side mechanism. - Use <code>right_attachment_up</code> reliably as
+part of a mission step.</p>
+<hr />
+<h2 id="what-right_attachment_up-does">1. What
+<code>right_attachment_up</code> Does</h2>
+<p>Open <code>master.py</code> and find:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> right_attachment_up(degrees, speed):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Move the right attachment UP for a given encoder distance.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    - Right attachment motor is on port.B.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - Positive degrees values move the mechanism up.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    motor.run_for_degrees(port.B, degrees, speed, stop<span class="op">=</span>motor.BRAKE)</span></code></pre></div>
+<p>Summarize behavior: - Uses <code>motor.run_for_degrees</code> on
+<code>port.B</code> (right attachment motor). - Runs the motor for
+<code>degrees</code> encoder degrees at <code>speed</code>. - Stops with
+<code>motor.BRAKE</code> at the end.</p>
+<p>Concept: - “Up” means <strong>move the right attachment in the
+lifting/engaging direction</strong> for a fixed, repeatable
+distance.</p>
+<hr />
+<h2 id="choosing-degrees-and-speed">2. Choosing <code>degrees</code> and
+<code>speed</code></h2>
+<p>Explain: - <strong><code>degrees</code></strong> controls <em>how
+far</em> the attachment moves. - Small values → small motion. - Larger
+values → further reach or lift. - <strong><code>speed</code></strong>
+controls <em>how fast</em> it moves. - Lower speeds are safer and easier
+on the mechanism. - Higher speeds are faster but may overshoot or
+strain.</p>
+<p>Suggested starting values: - <code>degrees = 180</code> -
+<code>speed = 400</code></p>
+<p>Activity: - With the robot in base, run a test mission that calls
+<code>right_attachment_up(180, 400)</code> and watch the motion. -
+Adjust <code>degrees</code> until it reaches the desired “up” position
+without slamming into anything.</p>
+<hr />
+<h2 id="simple-test-mission">3. Simple Test Mission</h2>
+<p>Create or reuse a mission that calls
+<code>right_attachment_up</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_right_attachment_up_test():</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<p>Run on the robot: - Observe the movement of the right-side mechanism.
+- Mark the “home” and “up” positions with tape or a pen.</p>
+<p>Later, combine with <code>right_attachment_down</code> (Lesson RAD)
+to go up and back down.</p>
+<hr />
+<h2 id="using-right_attachment_up-in-real-missions">4. Using
+<code>right_attachment_up</code> in Real Missions</h2>
+<p>Typical uses: - Lifting or pushing a model from the right side. -
+Rotating a tower or arm to hook, lift, or drop an object.</p>
+<p>Activity: - Pick one FLL model where the <strong>right</strong>
+attachment should do the work. - Decide: - “How far up should the
+mechanism move?” - “How fast should it move for safe contact?”</p>
+<p>Example mission snippet:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_right_model():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Approach model (tuned separately)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">360</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use right attachment to interact with the model</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Optional: wait for MotorIsStopped if needed</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># await runloop.until(lambda: MotorIsStopped(port.B))</span></span></code></pre></div>
+<p>Field testing: - Tune <code>degrees</code> and <code>speed</code>
+until: - The model is reliably triggered. - The attachment does not jam
+or overstress the mechanism.</p>
+<p>Encourage students to: - Record final <code>degrees</code> and
+<code>speed</code> values used for each model. - Add comments in the
+mission code describing what the right attachment is doing at each
+step.</p>
+<hr />
+<p><a href="index.html">Back to Lessons Index</a></p>
+</body>
+</html>

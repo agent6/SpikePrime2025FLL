@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-mis-motor-is-stopped</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<h1 id="lesson-mis-motorisstopped">Lesson MIS –
+<code>MotorIsStopped</code></h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code></p>
+</blockquote>
+<h2 id="lesson-goals">Lesson Goals</h2>
+<p>By the end of this lesson, students will be able to: - Explain what
+<code>MotorIsStopped(motor_port, samples=100)</code> does. - Describe
+how encoder readings show <strong>motion vs stop</strong>. - Use
+<code>await runloop.until(lambda: MotorIsStopped(port.C))</code> (or
+<code>port.B</code>) to wait for a mechanism to finish moving before the
+next action.</p>
+<hr />
+<h2 id="the-motorisstopped-helper-in-master.py">1. The
+<code>MotorIsStopped</code> Helper in <code>master.py</code></h2>
+<p>Open <code>master.py</code> and find:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> MotorIsStopped(motor_port, samples<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Return True if the motor on the given port appears stopped.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Waits a short time, then keeps checking the encoder position.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Once the position stops changing, returns True.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    first_position <span class="op">=</span> motor.relative_position(motor_port)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;MotorIsStopped start:&quot;</span>, motor_port, <span class="st">&quot;first_position:&quot;</span>, first_position)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initial wait so we do not immediately report &quot;stopped&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.25</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> motor.relative_position(motor_port)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;MotorIsStopped sample:&quot;</span>, motor_port, <span class="st">&quot;current:&quot;</span>, current)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> first_position:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">&quot;MotorIsStopped:&quot;</span>, motor_port, <span class="st">&quot;-&gt; True&quot;</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update reference and delay before next check</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        first_position <span class="op">=</span> current</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="fl">0.01</span>)</span></code></pre></div>
+<p>Explain: - Reads the motor encoder once
+(<code>first_position</code>), waits briefly, then keeps checking. - If
+the position stops changing (current equals first), it prints a message
+and returns <code>True</code>. - It <strong>never returns
+<code>False</code></strong>; it just keeps checking until the motor
+appears stopped.</p>
+<hr />
+<h2 id="encoders-motion-vs-stop">2. Encoders: Motion vs Stop</h2>
+<p>Remind students: - <code>motor.relative_position(port.X)</code>
+returns how many degrees the motor has turned since its last reset. -
+While the motor is <strong>moving</strong>, this number changes over
+time. - When the motor is <strong>stopped</strong>, the number stays the
+same between samples.</p>
+<p>Mini‑demo: - In a small test mission, print
+<code>motor.relative_position(port.C)</code> every 0.1 seconds while the
+attachment moves, then after it stops. - Show how the values change
+during motion and become constant when stopped.</p>
+<hr />
+<h2 id="using-motorisstopped-with-runloop.until">3. Using
+<code>MotorIsStopped</code> with <code>runloop.until</code></h2>
+<p>Pattern:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.C))</span></code></pre></div>
+<p>This means: - Keep calling <code>MotorIsStopped(port.C)</code> until
+it returns <code>True</code>. - Once it returns <code>True</code>,
+continue with the next line in the mission.</p>
+<p>Example with the left attachment:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_left_with_wait():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    left_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.C))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    left_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<p>In words: - Move the left attachment up. - Wait until motor C appears
+stopped (encoder stable). - Then move the attachment back down.</p>
+<hr />
+<h2 id="practice-wait-for-a-mechanism-to-settle">4. Practice – Wait for
+a Mechanism to Settle</h2>
+<p>Field activity: 1. Use a mission that: - Lifts an attachment to hit
+or lift a model. - Waits for <code>MotorIsStopped</code> on that port. -
+Then starts the next move (backing away or lowering). 2. Watch: - The
+console output (first position, samples, and final <code>True</code>). -
+The physical mechanism: does it stop bouncing before the next action
+starts?</p>
+<p>Example snippet for the right attachment:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_right_hit_and_settle():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.B))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    right_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span></code></pre></div>
+<p>Discuss: - How is this more robust than using a fixed time delay
+(e.g., <code>await runloop.sleep_ms(500)</code>)? - It adapts to battery
+level, load, and small changes in mechanism friction.</p>
+<p>Encourage students to: - Use <code>MotorIsStopped</code> anywhere a
+mechanism must finish moving and settle before the next drive or turn. -
+Reduce “mystery timing” in missions by using actual motor feedback
+instead of guessed delays.</p>
+<hr />
+<p><a href="index.html">Back to Lessons Index</a></p>
+</body>
+</html>

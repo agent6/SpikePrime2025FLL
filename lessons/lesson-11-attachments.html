@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-11-attachments</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<h1 id="lesson-11-attachments-left-right">Lesson 11 – Attachments (Left
+&amp; Right)</h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code><br />
+API reference:
+https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html</p>
+</blockquote>
+<h2 id="lesson-goals">Lesson Goals</h2>
+<p>By the end of this lesson, students will be able to: - Use the left
+attachment helpers: <code>left_attachment_up</code> and
+<code>left_attachment_down</code>. - Use the right attachment helpers:
+<code>right_attachment_up</code> and <code>right_attachment_down</code>.
+- Explain how <strong>encoder degrees</strong> give repeatable
+attachment positions. - Run a practice mission: hit a model, then safely
+return the attachment “home”.</p>
+<hr />
+<h2 id="attachment-helpers-in-master.py">1. Attachment Helpers in
+<code>master.py</code></h2>
+<p>Open <code>master.py</code> and locate:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> left_attachment_up(degrees, speed<span class="op">=</span><span class="dv">1110</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> left_attachment_down(degrees, speed<span class="op">=</span><span class="dv">1110</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> right_attachment_up(degrees, speed):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> right_attachment_down(degrees, speed):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>Port mapping reminder: - <code>port.C</code> – left attachment motor
+- <code>port.B</code> – right attachment motor</p>
+<p>Explain: - “Up” raises or actuates the mechanism. - “Down” returns it
+toward its starting/home position.</p>
+<hr />
+<h2 id="encoder-degrees-and-repeatable-positions">2. Encoder Degrees and
+Repeatable Positions</h2>
+<p>Attach a simple arm to each attachment motor (or point to your
+existing mechanisms).</p>
+<p>Explain: - Motors have encoders that measure <strong>degrees
+turned</strong> since last reset. - Running for the same number of
+degrees each time → <strong>repeatable motion</strong>.</p>
+<p>Example behavior (simplified):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>left_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)    <span class="co"># move up ~half turn</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>left_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)  <span class="co"># move back down ~half turn</span></span></code></pre></div>
+<p>Activity: - Mark the attachment’s “home” position with tape. - Run
+<code>left_attachment_up</code> once. - Run
+<code>left_attachment_down</code> and check if it returns to the tape
+mark. - Adjust <code>degrees</code> until it reliably hits the same
+positions.</p>
+<hr />
+<h2 id="simple-attachment-test-missions">3. Simple Attachment Test
+Missions</h2>
+<p>Use or create missions that call the helpers directly, e.g.:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_left_attachment_test():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    left_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.C))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    left_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_right_attachment_test():</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    right_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.B))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    right_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span></code></pre></div>
+<p>Run these on the robot: - Watch the arm go out and back. - Confirm
+that each cycle returns to roughly the same home position.</p>
+<hr />
+<h2 id="practice-hit-a-model-then-return-home">4. Practice – Hit a
+Model, Then Return Home</h2>
+<p>On the FLL field: 1. Choose a simple model (or a block/target) in
+base. 2. Position the robot so an attachment can <strong>reach</strong>
+the model.</p>
+<p>Design a short mission:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_hit_model():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drive into position (tune these values on the field)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">360</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hit or lift the model with an attachment</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    left_attachment_up(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(<span class="kw">lambda</span>: MotorIsStopped(port.C))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Back away and return the attachment home</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    drive_backward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">360</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    left_attachment_down(<span class="dv">180</span>, speed<span class="op">=</span><span class="dv">400</span>)</span></code></pre></div>
+<p>Field activity: - Start from a consistent base position. - Run the
+mission and see if: - The attachment reliably reaches and hits/lifts the
+model. - The robot backs away without snagging. - The attachment returns
+to a safe home position.</p>
+<p>Adjust: - Attachment <strong>degrees</strong> for up/down until you
+get good contact without jamming. - Drive distances so you approach and
+leave the model cleanly.</p>
+<p>Encourage students to: - Record working values (degrees and speeds)
+per mission. - Use comments in <code>master.py</code> or a notebook to
+label which attachment positions correspond to which models.</p>
+<hr />
+<p><a href="index.html">Back to Lessons Index</a></p>
+</body>
+</html>
