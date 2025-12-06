@@ -125,15 +125,120 @@ during the run. - <code>target_degrees</code> – how far the left wheel
 should rotate (distance proxy). - <code>kP</code> – proportional gain;
 how strongly yaw error changes the wheel speeds.</p>
 <hr />
-<h2 id="proportional-correction-recap">2. Proportional Correction
+<h2 id="inside-the-full-drive_forward-method">2. Inside the Full
+<code>drive_forward</code> Method</h2>
+<p>Here is a simplified version of the full method in
+<code>master.py</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> drive_forward(min_speed, max_speed, target_degrees, kP<span class="op">=</span><span class="fl">0.5</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    ACCELERATE <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    CRUISE <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    DECELERATE <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    FINISH <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    motion_sensor.reset_yaw(<span class="dv">0</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    motor.reset_relative_position(port.A, <span class="dv">0</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    left_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    right_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    phase <span class="op">=</span> ACCELERATE</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    speed_step_counter <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    accel_degrees <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        distance_travelled <span class="op">=</span> <span class="op">-</span>motor.relative_position(port.A)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1) Phase state machine: accelerate → cruise → decelerate → finish</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> phase <span class="op">==</span> ACCELERATE:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Slowly ramp up both wheel speeds</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            speed_step_counter <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> speed_step_counter <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                left_speed <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>                right_speed <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                speed_step_counter <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># If we have already gone at least half the distance,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>            <span class="co"># skip the cruise phase and start decelerating early.</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> distance_travelled <span class="op">&gt;=</span> (target_degrees <span class="op">/</span> <span class="dv">2</span>):</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                phase <span class="op">=</span> DECELERATE</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            <span class="co"># When we hit max_speed, move to CRUISE and remember</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="co"># how many degrees acceleration took.</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> left_speed <span class="op">&gt;=</span> max_speed:</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                phase <span class="op">=</span> CRUISE</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>                left_speed <span class="op">=</span> max_speed</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                right_speed <span class="op">=</span> max_speed</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                accel_degrees <span class="op">=</span> distance_travelled</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> phase <span class="op">==</span> CRUISE:</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Stay at max speed until we are close enough to the target</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            <span class="co"># that it&#39;s time to decelerate. We use accel_degrees to</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            <span class="co"># roughly mirror the distance spent accelerating.</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> distance_travelled <span class="op">&gt;=</span> (target_degrees <span class="op">-</span> (<span class="dv">2</span> <span class="op">*</span> accel_degrees)):</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>                phase <span class="op">=</span> DECELERATE</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> phase <span class="op">==</span> DECELERATE:</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Gradually ramp speeds back down toward min_speed</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            speed_step_counter <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> speed_step_counter <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>                left_speed <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>                right_speed <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                speed_step_counter <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> left_speed <span class="op">&lt;=</span> min_speed:</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>                left_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                right_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>                phase <span class="op">=</span> FINISH</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> phase <span class="op">==</span> FINISH:</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Hold at min_speed until we reach the final distance</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            left_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>            right_speed <span class="op">=</span> min_speed</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2) Heading correction using yaw and kP</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        yaw <span class="op">=</span> motion_sensor.tilt_angles()[<span class="dv">0</span>]</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        correction <span class="op">=</span> <span class="bu">int</span>(kP <span class="op">*</span> yaw)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        left_command <span class="op">=</span> left_speed <span class="op">+</span> correction</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        right_command <span class="op">=</span> right_speed <span class="op">-</span> correction</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3) Clamp motor commands so they never exceed max_speed</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        max_cmd <span class="op">=</span> max_speed</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        left_command <span class="op">=</span> <span class="bu">max</span>(<span class="op">-</span>max_cmd, <span class="bu">min</span>(max_cmd, left_command))</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        right_command <span class="op">=</span> <span class="bu">max</span>(<span class="op">-</span>max_cmd, <span class="bu">min</span>(max_cmd, right_command))</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4) Send commands to motors (note: left motor direction is flipped)</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        motor.run(port.A, <span class="op">-</span>left_command)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        motor.run(port.E, right_command)</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 5) Stop when the distance target is reached</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> distance_travelled <span class="op">&gt;=</span> target_degrees:</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>            motor.stop(port.A, stop<span class="op">=</span>motor.BRAKE)</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>            motor.stop(port.E, stop<span class="op">=</span>motor.BRAKE)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span></code></pre></div>
+<p>Walk-through: - It uses a <strong>phase</strong> variable
+(ACCELERATE/CRUISE/DECELERATE/FINISH) to manage speed changes over time.
+- <code>distance_travelled</code> comes from the left motor encoder;
+this is the main distance reference. - In ACCELERATE, speeds ramp up
+slowly to avoid sudden jumps. - If more than half the distance is
+already covered during acceleration, the code <strong>skips the cruise
+phase</strong> and goes straight to deceleration (useful for shorter
+moves). - <code>accel_degrees</code> remembers how much distance was
+spent accelerating so CRUISE and DECELERATE can roughly mirror it. - In
+DECELERATE, speeds ramp down gradually back to <code>min_speed</code>. -
+Yaw-based correction (<code>kP * yaw</code>) is applied every loop to
+keep the robot on heading. - Motor commands are clamped to avoid
+exceeding <code>max_speed</code>. - The loop ends when the encoder shows
+the left wheel has turned <code>target_degrees</code>.</p>
+<hr />
+<h2 id="proportional-correction-recap">3. Proportional Correction
 Recap</h2>
 <p>Key lines inside the function:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>yaw <span class="op">=</span> motion_sensor.tilt_angles()[<span class="dv">0</span>]</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>correction <span class="op">=</span> <span class="bu">int</span>(kP <span class="op">*</span> yaw)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>left_command <span class="op">=</span> left_speed <span class="op">+</span> correction</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>right_command <span class="op">=</span> right_speed <span class="op">-</span> correction</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yaw <span class="op">=</span> motion_sensor.tilt_angles()[<span class="dv">0</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>correction <span class="op">=</span> <span class="bu">int</span>(kP <span class="op">*</span> yaw)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>left_command <span class="op">=</span> left_speed <span class="op">+</span> correction</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>right_command <span class="op">=</span> right_speed <span class="op">-</span> correction</span></code></pre></div>
 <p>Explain in simple terms: - If yaw is not 0, the robot is drifting off
 its intended heading. - We multiply yaw by <code>kP</code> to get a
 correction amount. - We adjust left/right speeds in
@@ -142,19 +247,19 @@ correction amount. - We adjust left/right speeds in
 correction → more drift.) - What happens if <code>kP</code> is too
 large? (Robot “wiggles” or oscillates.)</p>
 <hr />
-<h2 id="simple-field-test-for-drive_forward">3. Simple Field Test for
+<h2 id="simple-field-test-for-drive_forward">4. Simple Field Test for
 <code>drive_forward</code></h2>
 <p>Create or reuse a mission that calls <code>drive_forward</code>:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_drive_forward_test():</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tune these numbers on the field</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">720</span>, kP<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_drive_forward_test():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tune these numbers on the field</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">720</span>, kP<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
 <p>On the field: 1. Place the robot squarely against base or along a mat
 line. 2. Run the mission via the selector. 3. Observe: - How far does it
 travel? - Does it drift left or right?</p>
 <hr />
-<h2 id="tuning-drive_forward-distance-and-straightness">4. Tuning
+<h2 id="tuning-drive_forward-distance-and-straightness">5. Tuning
 <code>drive_forward</code> – Distance and Straightness</h2>
 <p>Adjusting <strong>distance</strong>: - Increase
 <code>target_degrees</code> to go farther. - Decrease
@@ -215,7 +320,7 @@ wiggles or oscillates, reduce <code>kP</code>.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="connecting-to-real-missions">5. Connecting to Real Missions</h2>
+<h2 id="connecting-to-real-missions">6. Connecting to Real Missions</h2>
 <p>Ask: - “Which FLL mission needs a reliable straight drive?” - “Can we
 use one <code>drive_forward</code> call to get from base to that
 model?”</p>
