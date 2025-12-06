@@ -1,7 +1,7 @@
 # Lesson 12 – Async Motion Helpers & Parallel Tasks
 
 > Environment: Spike App IDE with our FLL robot and `master.py`  
-> API reference: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+> API reference: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 ## Lesson Goals
 

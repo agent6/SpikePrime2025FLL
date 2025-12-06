@@ -1,7 +1,7 @@
 # Lesson 8 – Straight Driving with `drive_forward` / `drive_backward`
 
 > Environment: Spike App IDE with our FLL robot and `master.py`  
-> API reference: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html  
+> API reference: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>  
 > Example programs: LEGO SPIKE Python Programs (Feb 2024 PDF)
 
 ## Lesson Goals

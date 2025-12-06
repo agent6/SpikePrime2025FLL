@@ -1,7 +1,7 @@
 # Lesson 13 – Detecting Motor Stop with `MotorIsStopped`
 
 > Environment: Spike App IDE with our FLL robot and `master.py`  
-> API reference: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+> API reference: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 ## Lesson Goals
 

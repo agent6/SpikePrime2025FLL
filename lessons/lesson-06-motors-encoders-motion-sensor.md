@@ -1,7 +1,7 @@
 # Lesson 6 – Motors, Encoders, and Motion Sensor
 
 > Environment: Spike App IDE with a Spike Prime hub connected  
-> Reference docs: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+> Reference docs: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 ## Lesson Goals
 

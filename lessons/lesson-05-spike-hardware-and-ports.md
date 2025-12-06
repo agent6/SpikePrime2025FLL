@@ -1,7 +1,7 @@
 # Lesson 5 – Spike Hardware & Ports
 
 > Environment: Spike App IDE (with a Spike Prime hub connected)  
-> Reference docs: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+> Reference docs: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 ## Lesson Goals
 
@@ -62,7 +62,7 @@ Activity:
 ## 3. Reading the Tufts SPIKE 3 Python Docs
 
 Open the docs in a browser:  
-https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+<https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 Walk through:
 - The **Table of Contents** (Hub, Motor, MotorPair, Sensors, `runloop`, etc.).

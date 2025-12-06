@@ -1,7 +1,7 @@
 # Lesson 4 – Lists and Dictionaries (Stretch)
 
 > Environment: Use the online Python playground  
-> https://www.onlineide.pro/playground/python
+> <https://www.onlineide.pro/playground/python>
 
 ## Lesson Goals
 

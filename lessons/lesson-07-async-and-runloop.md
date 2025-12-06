@@ -1,7 +1,7 @@
 # Lesson 7 – Async and `runloop`
 
 > Environment: Spike App IDE with a Spike Prime hub connected  
-> Reference docs: https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html
+> Reference docs: <https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html>
 
 ## Lesson Goals
 
