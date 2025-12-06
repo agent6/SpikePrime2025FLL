@@ -2,6 +2,9 @@
 
 This project contains the Python code for our 2025 FIRST LEGO League robot running on a LEGO Spike Prime hub with **v3 firmware**. The main program for the robot is in `master.py`.
 
+For students and mentors, a lesson site is published at:  
+https://agent6.github.io/SpikePrime2025FLL/lessons/
+
 The code is written using the Spike Python runtime (v3), `runloop`, and the built‑in motion sensor and motor APIs.
 
 ---
