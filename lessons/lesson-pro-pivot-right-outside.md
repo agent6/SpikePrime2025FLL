@@ -45,7 +45,56 @@ Concept:
 
 ---
 
-## 2. Quick Mental Model
+## 2. Inside the Full `pivot_right_outside` Method
+
+Here is the method again with a step-by-step explanation:
+
+```python
+def pivot_right_outside(speed, target_angle_degrees):
+    """
+    Pivot turn to the RIGHT using the outside wheel.
+
+    Right turn, outside wheel moves FORWARD:
+    - Left motor (port.A) is the outside wheel and moves forward.
+    - Right motor (port.E) stays stopped.
+    The motion sensor yaw is used as the angle reference.
+    """
+    # 1) Reset yaw so current heading is 0 degrees
+    motion_sensor.reset_yaw(0)
+
+    # 2) Turn until yaw reaches -target_angle_degrees
+    while motion_sensor.tilt_angles()[0] > -target_angle_degrees:
+        # Left wheel (outside) moves, right wheel stays stopped
+        motor.run(port.A, -speed)
+
+    # 3) Stop the left wheel when the angle is reached
+    motor.stop(port.A, stop=motor.BRAKE)
+```
+
+Walk-through:
+- `motion_sensor.reset_yaw(0)`:
+  - Sets yaw to 0 at the starting heading.
+  - All subsequent yaw readings measure how far we’ve turned from that starting pose.
+- Yaw sign convention in this code:
+  - For right turns, yaw becomes **negative**.
+  - For left turns, yaw becomes **positive**.
+- The `while` loop:
+  - Reads `yaw = motion_sensor.tilt_angles()[0]`.
+  - While `yaw > -target_angle_degrees`, it keeps running the left motor.
+  - As the robot turns right, yaw decreases from 0 down toward `-target_angle_degrees`.
+- `motor.run(port.A, -speed)`:
+  - Commands the left wheel to move in the “forward” direction for a right outside pivot (relative to how `drive_forward` is wired in this robot).
+  - The right wheel on `port.E` remains stopped, acting as the pivot point.
+- When yaw reaches `-target_angle_degrees`:
+  - The loop exits.
+  - `motor.stop(port.A, stop=motor.BRAKE)` brakes the moving wheel to hold the final orientation.
+
+Key idea:
+- `pivot_right_outside` is a yaw‑controlled pivot where the **outside wheel** (left) moves and the inside wheel (right) stays still. The motion sensor decides when to stop based on reaching a negative yaw angle.
+
+---
+
+## 3. Quick Mental Model
 
 Ask students:
 - “If only the left wheel moves forward and the right stays still, which way do we turn?”  
@@ -59,7 +108,7 @@ Relate to geometry:
 
 ---
 
-## 3. Simple Field Test Mission
+## 4. Simple Field Test Mission
 
 Create or reuse a mission that calls `pivot_right_outside`:
 
@@ -79,7 +128,7 @@ On the field:
 
 ---
 
-## 4. Tuning the Pivot Angle
+## 5. Tuning the Pivot Angle
 
 Goal: Achieve a reliable ~90° right outside pivot at a chosen speed.
 
@@ -105,7 +154,7 @@ Encourage:
 
 ---
 
-## 5. Connecting to Real Missions
+## 6. Connecting to Real Missions
 
 Ask:
 - “Where in our missions do we need a precise right turn around one wheel?”
@@ -119,5 +168,4 @@ Activity:
 This lesson complements the left outside pivot (PLO) and helps build a complete set of reliable right‑turn maneuvers for FLL runs.  
 
 ---
-
 

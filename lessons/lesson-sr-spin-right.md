@@ -45,7 +45,57 @@ Concept:
 
 ---
 
-## 2. Mental Model – Wheels During a Right Spin
+## 2. Inside the Full `spin_right` Method
+
+Here is the method again, with explanation:
+
+```python
+def spin_right(speed, target_angle_degrees):
+    """
+    In-place spin to the RIGHT using opposite wheel directions.
+
+    - Left motor (port.A) runs forward.
+    - Right motor (port.E) runs backward.
+    - Stops when yaw reaches -target_angle_degrees.
+    """
+    # 1) Reset yaw so current heading is 0 degrees
+    motion_sensor.reset_yaw(0)
+
+    # 2) Turn until yaw reaches the requested right angle (negative)
+    while motion_sensor.tilt_angles()[0] > -target_angle_degrees:
+        # Forward on left, backward on right (relative to drive_forward)
+        motor.run(port.A, -speed)
+        motor.run(port.E, -speed)
+
+    # 3) Stop both wheels with brake
+    motor.stop(port.A, stop=motor.BRAKE)
+    motor.stop(port.E, stop=motor.BRAKE)
+```
+
+Walk-through:
+- `motion_sensor.reset_yaw(0)`:
+  - Sets yaw to 0 at the current orientation.
+  - From here, yaw reports how far we’ve turned from that starting heading.
+- Yaw sign convention:
+  - Right turns make yaw **negative**.
+  - Left turns make yaw **positive**.
+- The `while` loop:
+  - Reads `yaw = motion_sensor.tilt_angles()[0]`.
+  - While `yaw > -target_angle_degrees`, the robot keeps spinning right.
+  - As we turn right, yaw decreases from 0 toward the negative target.
+- Motor commands:
+  - `motor.run(port.A, -speed)` and `motor.run(port.E, -speed)` are chosen to produce an in‑place spin to the right given the wiring used in `drive_forward`.
+  - Both wheels move with equal magnitude but opposite effective directions relative to straight driving, so the robot rotates rather than translating.
+- When yaw reaches `-target_angle_degrees`:
+  - The loop exits.
+  - `motor.stop(port.A, ...)` and `motor.stop(port.E, ...)` brake both wheels to hold the final heading.
+
+Key idea:
+- `spin_right` is a yaw‑controlled **in‑place rotation** to the right: we reset yaw, drive both wheels in a pattern that causes rotation, and stop exactly when yaw hits the negative target angle.
+
+---
+
+## 3. Mental Model – Wheels During a Right Spin
 
 Ask students:
 - “For a right spin, do we want the robot’s nose to turn right without drifting sideways?”  
@@ -61,7 +111,7 @@ Compare to pivots:
 
 ---
 
-## 3. Simple Field Test Mission
+## 4. Simple Field Test Mission
 
 Create or reuse a mission that calls `spin_right`:
 
@@ -81,7 +131,7 @@ On the field:
 
 ---
 
-## 4. Tuning the Spin Angle
+## 5. Tuning the Spin Angle
 
 Goal: Achieve a reliable ~90° right spin at a chosen speed.
 
@@ -107,7 +157,7 @@ Encourage:
 
 ---
 
-## 5. Connecting `spin_right` to Missions
+## 6. Connecting `spin_right` to Missions
 
 Ask:
 - “When would a right spin be better than a right pivot?”
@@ -121,5 +171,4 @@ Activity:
 This lesson makes `spin_right` a dependable tool for fast, in‑place orientation changes in your competition runs.  
 
 ---
-
 

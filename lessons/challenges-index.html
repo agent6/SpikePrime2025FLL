@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spike Prime FLL Challenges</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="content">
+      <div class="content-inner">
+        <h1>Spike Prime FLL Challenges</h1>
+        <p class="subtitle">
+          Apply the helpers from <code>master.py</code> in real tasks.
+          These challenges are designed to take you from basic motion tests
+          to full FLL-style missions.
+        </p>
+        <p class="subtitle">
+          Lessons index: <a href="index.html">Spike Prime FLL Lessons</a> ·
+          Repo: <a href="https://github.com/agent6/SpikePrime2025FLL" target="_blank" rel="noopener">
+            github.com/agent6/SpikePrime2025FLL
+          </a>
+        </p>
+
+        <div class="toc-section">
+          <h2>Challenge Group C1 – Straight-Line Accuracy</h2>
+          <p class="subtitle">
+            Practice using <code>drive_forward</code> and <code>drive_backward</code> to move
+            accurately along a straight line, then return to base. Focus on distance and
+            heading control using encoders and yaw.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c1-1-hit-the-line.html">C1.1 – Hit the Line</a>
+              <div class="subtitle">Drive straight from base and stop on a marked line using <code>drive_forward</code>.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-section">
+          <h2>Challenge Group C2 – Turning &amp; Alignment</h2>
+          <p class="subtitle">
+            Use pivot and spin helpers to control robot orientation precisely. Practice making
+            clean 90° turns, in‑place spins, and aligning the robot to field lines or walls.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c2-1-square-path-with-pivots.html">C2.1 – Square Path with Pivots</a>
+              <div class="subtitle">
+                Use <code>drive_forward</code> and <code>pivot_*()</code> helpers to drive a four-sided square and end aligned near the start.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-section">
+          <h2>Challenge Group C3 – Attachments &amp; Models</h2>
+          <p class="subtitle">
+            Practice using left and right attachments to interact with models. Focus on lifting,
+            tapping, and returning mechanisms to a safe home position using encoder degrees and
+            <code>MotorIsStopped</code>.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c3-1-tap-the-target.html">C3.1 – Tap the Target</a>
+              <div class="subtitle">
+                Use <code>left_attachment_*()</code> or <code>right_attachment_*()</code> to gently tap a model and return to a safe home position.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-section">
+          <h2>Challenge Group C4 – Combined Motion (Drive + Attach)</h2>
+          <p class="subtitle">
+            Combine driving and attachments using async helpers. Practice raising or lowering
+            mechanisms while the robot is moving, and coordinating timing so actions finish at
+            the right moment.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c4-1-drive-while-lifting.html">C4.1 – Drive While Lifting</a>
+              <div class="subtitle">
+                Drive using <code>async_drive_forward</code> while lifting an attachment in parallel with async helpers.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-section">
+          <h2>Challenge Group C5 – Mission Builder &amp; Optimization</h2>
+          <p class="subtitle">
+            Design full FLL-style missions using the helpers in <code>master.py</code>, then
+            optimize them for speed and reliability. Focus on chaining movements, attachments,
+            and selector-driven mission slots.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c5-1-build-a-full-mission.html">C5.1 – Build a Full Model Mission</a>
+              <div class="subtitle">
+                Turn a test mission into a real model run, then tune it for reliability and speed.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-section">
+          <h2>Challenge Group C6 – Robustness &amp; Recovery</h2>
+          <p class="subtitle">
+            Make missions more resilient to variation and mistakes. Focus on using feedback
+            (encoders, <code>MotorIsStopped</code>, and mission structure) to recover from
+            small errors and keep the robot in a known, safe state between runs.
+          </p>
+          <ul>
+            <li>
+              <a href="challenge-c6-1-robust-rehome-and-recovery.html">C6.1 – Robust Re-home &amp; Recovery</a>
+              <div class="subtitle">
+                Build a recovery mission that re-homes attachments using <code>MotorIsStopped</code> and ends in a known safe state.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Future groups C2–C6 will be added here -->
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

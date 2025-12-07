@@ -135,7 +135,50 @@ brake.</p>
 <strong>inside</strong> wheel backing up, with the right wheel acting as
 the pivot point.</p>
 <hr />
-<h2 id="quick-mental-model">2. Quick Mental Model</h2>
+<h2 id="inside-the-full-pivot_right_inside-method">2. Inside the Full
+<code>pivot_right_inside</code> Method</h2>
+<p>Here is the method with line‑by‑line explanation:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pivot_right_inside(speed, target_angle_degrees):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Pivot turn to the RIGHT using the inside wheel.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Right turn, inside wheel moves BACKWARD:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - Left motor (port.A) is the inside wheel and moves backward.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - Right motor (port.E) stays stopped.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    The motion sensor yaw is used as the angle reference.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) Reset yaw so current facing is 0 degrees</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    motion_sensor.reset_yaw(<span class="dv">0</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2) Keep turning until yaw reaches -target_angle_degrees</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> motion_sensor.tilt_angles()[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="op">-</span>target_angle_degrees:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Left wheel (inside) moves backward, right wheel stays stopped</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        motor.run(port.A, <span class="op">-</span>speed)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3) Stop the left wheel at the target angle</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.A, stop<span class="op">=</span>motor.BRAKE)</span></code></pre></div>
+<p>Walk-through: - <code>motion_sensor.reset_yaw(0)</code>: - Sets the
+yaw reading to 0 at the start. - All future yaw values describe how far
+we’ve turned from the starting heading. - Yaw convention: - Turning
+<strong>right</strong> makes yaw more negative. - We want to reach
+<code>-target_angle_degrees</code> for a right turn. - The
+<code>while</code> loop: - Reads
+<code>yaw = motion_sensor.tilt_angles()[0]</code>. - While
+<code>yaw &gt; -target_angle_degrees</code>, we keep running the left
+wheel. - As the robot turns right, yaw decreases from 0 down toward the
+negative target. - <code>motor.run(port.A, -speed)</code>: - Spins the
+left wheel backward at the given speed. - The right wheel is not
+commanded and stays stopped, acting as the pivot point. - When yaw
+reaches <code>-target_angle_degrees</code>: - The loop exits. -
+<code>motor.stop(port.A, stop=motor.BRAKE)</code> brakes the moving
+wheel to hold the final orientation.</p>
+<p>Key idea: - <code>pivot_right_inside</code> is a yaw‑controlled pivot
+where the <strong>inside wheel backs up</strong>. This produces a
+tighter right turn than an outside pivot and keeps the outer side of the
+robot from swinging as far.</p>
+<hr />
+<h2 id="quick-mental-model">3. Quick Mental Model</h2>
 <p>Ask students: - “If the left wheel moves backward and the right wheel
 is stopped, which way do we turn?”<br />
 → Right. - “Is this different from
@@ -145,20 +188,20 @@ backward.</p>
 <p>Compare: - Outside right pivot: wider arc, left wheel forward. -
 Inside right pivot: tighter, backing motion around the inside.</p>
 <hr />
-<h2 id="simple-field-test-mission">3. Simple Field Test Mission</h2>
+<h2 id="simple-field-test-mission">4. Simple Field Test Mission</h2>
 <p>Create or reuse a mission that calls
 <code>pivot_right_inside</code>:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_pivot_right_inside_test():</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust speed and angle on the field</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    pivot_right_inside(<span class="dv">200</span>, <span class="dv">45</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_pivot_right_inside_test():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust speed and angle on the field</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    pivot_right_inside(<span class="dv">200</span>, <span class="dv">45</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
 <p>On the field: 1. Place the robot square against base or along a line.
 2. Run the mission from the selector. 3. Observe: - Does the left wheel
 back up while the right stays in place? - How big is the turn compared
 to <code>pivot_right_outside</code>?</p>
 <hr />
-<h2 id="tuning-the-inside-pivot-angle">4. Tuning the Inside Pivot
+<h2 id="tuning-the-inside-pivot-angle">5. Tuning the Inside Pivot
 Angle</h2>
 <p>Goal: Achieve a reliable right inside pivot for a chosen speed (e.g.,
 ~45° or 90°).</p>
@@ -203,7 +246,7 @@ Increase <code>target_angle_degrees</code> (e.g., 50–60). 4. If it
 vs <code>pivot_right_outside</code>. - Decide which pivot is better for
 each specific mission situation.</p>
 <hr />
-<h2 id="connecting-to-real-missions">5. Connecting to Real Missions</h2>
+<h2 id="connecting-to-real-missions">6. Connecting to Real Missions</h2>
 <p>Ask: - “Where might a right inside pivot be safer or more precise?” -
 Example: backing around a model without swinging the far side of the
 robot too much.</p>

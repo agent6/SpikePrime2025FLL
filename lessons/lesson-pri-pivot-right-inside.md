@@ -45,7 +45,56 @@ Concept:
 
 ---
 
-## 2. Quick Mental Model
+## 2. Inside the Full `pivot_right_inside` Method
+
+Here is the method with line‑by‑line explanation:
+
+```python
+def pivot_right_inside(speed, target_angle_degrees):
+    """
+    Pivot turn to the RIGHT using the inside wheel.
+
+    Right turn, inside wheel moves BACKWARD:
+    - Left motor (port.A) is the inside wheel and moves backward.
+    - Right motor (port.E) stays stopped.
+    The motion sensor yaw is used as the angle reference.
+    """
+    # 1) Reset yaw so current facing is 0 degrees
+    motion_sensor.reset_yaw(0)
+
+    # 2) Keep turning until yaw reaches -target_angle_degrees
+    while motion_sensor.tilt_angles()[0] > -target_angle_degrees:
+        # Left wheel (inside) moves backward, right wheel stays stopped
+        motor.run(port.A, -speed)
+
+    # 3) Stop the left wheel at the target angle
+    motor.stop(port.A, stop=motor.BRAKE)
+```
+
+Walk-through:
+- `motion_sensor.reset_yaw(0)`:
+  - Sets the yaw reading to 0 at the start.
+  - All future yaw values describe how far we’ve turned from the starting heading.
+- Yaw convention:
+  - Turning **right** makes yaw more negative.
+  - We want to reach `-target_angle_degrees` for a right turn.
+- The `while` loop:
+  - Reads `yaw = motion_sensor.tilt_angles()[0]`.
+  - While `yaw > -target_angle_degrees`, we keep running the left wheel.
+  - As the robot turns right, yaw decreases from 0 down toward the negative target.
+- `motor.run(port.A, -speed)`:
+  - Spins the left wheel backward at the given speed.
+  - The right wheel is not commanded and stays stopped, acting as the pivot point.
+- When yaw reaches `-target_angle_degrees`:
+  - The loop exits.
+  - `motor.stop(port.A, stop=motor.BRAKE)` brakes the moving wheel to hold the final orientation.
+
+Key idea:
+- `pivot_right_inside` is a yaw‑controlled pivot where the **inside wheel backs up**. This produces a tighter right turn than an outside pivot and keeps the outer side of the robot from swinging as far.
+
+---
+
+## 3. Quick Mental Model
 
 Ask students:
 - “If the left wheel moves backward and the right wheel is stopped, which way do we turn?”  
@@ -59,7 +108,7 @@ Compare:
 
 ---
 
-## 3. Simple Field Test Mission
+## 4. Simple Field Test Mission
 
 Create or reuse a mission that calls `pivot_right_inside`:
 
@@ -79,7 +128,7 @@ On the field:
 
 ---
 
-## 4. Tuning the Inside Pivot Angle
+## 5. Tuning the Inside Pivot Angle
 
 Goal: Achieve a reliable right inside pivot for a chosen speed (e.g., ~45° or 90°).
 
@@ -105,7 +154,7 @@ Encourage:
 
 ---
 
-## 5. Connecting to Real Missions
+## 6. Connecting to Real Missions
 
 Ask:
 - “Where might a right inside pivot be safer or more precise?”
@@ -119,5 +168,4 @@ Activity:
 This lesson completes the pivot set by solidifying how to use inside right pivots alongside outside and left pivots for full control of robot orientation on the FLL field.  
 
 ---
-
 

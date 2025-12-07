@@ -44,7 +44,60 @@ Concept:
 
 ---
 
-## 2. Mental Model – Wheels During a Left Spin
+## 2. Inside the Full `spin_left` Method
+
+Here is the method with explanation:
+
+```python
+def spin_left(speed, target_angle_degrees):
+    """
+    In-place spin to the LEFT using opposite wheel directions.
+
+    - Right motor (port.E) runs forward.
+    - Left motor (port.A) runs backward.
+    - Stops when yaw reaches target_angle_degrees.
+    """
+    # 1) Reset yaw so current facing is 0 degrees
+    motion_sensor.reset_yaw(0)
+
+    # 2) Turn until yaw reaches the requested left angle
+    while motion_sensor.tilt_angles()[0] < target_angle_degrees:
+        # Backward on left, forward on right (relative to drive_forward)
+        motor.run(port.A, speed)
+        motor.run(port.E, speed)
+
+    # 3) Stop both wheels with brake
+    motor.stop(port.A, stop=motor.BRAKE)
+    motor.stop(port.E, stop=motor.BRAKE)
+```
+
+Walk-through:
+- `motion_sensor.reset_yaw(0)`:
+  - Sets yaw to 0 at the current heading.
+  - After this, yaw tells us how far we’ve turned left/right from that starting orientation.
+- Yaw sign convention:
+  - Left turns → yaw increases (positive).
+  - Right turns → yaw decreases (negative).
+- The `while` loop:
+  - Reads `yaw = motion_sensor.tilt_angles()[0]`.
+  - While `yaw < target_angle_degrees`, the robot keeps spinning left.
+- Motor commands:
+  - Both `motor.run(port.A, speed)` and `motor.run(port.E, speed)` are used here with signs chosen relative to how `drive_forward` is wired on your robot.
+  - Because of that wiring, this pair of commands makes the robot rotate around its center rather than drive straight.
+  - Both wheels move, but in such a way that the net translation is small and the main effect is rotation.
+- When yaw reaches `target_angle_degrees`:
+  - The loop ends.
+  - `motor.stop(port.A, ...)` and `motor.stop(port.E, ...)` brake both wheels to hold the final heading.
+
+Key idea:
+- `spin_left` is a yaw‑controlled **in‑place rotation**. We:
+  - Reset yaw.
+  - Continuously command wheel speeds that cause rotation.
+  - Stop as soon as yaw hits the target left angle.
+
+---
+
+## 3. Mental Model – Wheels During a Left Spin
 
 Ask students:
 - “For a left spin, do we want the robot’s nose to turn left without moving much?”  
@@ -60,7 +113,7 @@ Compare to pivots:
 
 ---
 
-## 3. Simple Field Test Mission
+## 4. Simple Field Test Mission
 
 Create or reuse a mission that calls `spin_left`:
 
@@ -80,7 +133,7 @@ On the field:
 
 ---
 
-## 4. Tuning the Spin Angle
+## 5. Tuning the Spin Angle
 
 Goal: Achieve a reliable ~90° left spin at a chosen speed.
 
@@ -106,7 +159,7 @@ Encourage:
 
 ---
 
-## 5. Connecting `spin_left` to Missions
+## 6. Connecting `spin_left` to Missions
 
 Ask:
 - “When would a left spin be better than a pivot?”
@@ -120,5 +173,4 @@ Activity:
 This focused practice makes `spin_left` a reliable tool in your mission toolbox for fast orientation changes.  
 
 ---
-
 

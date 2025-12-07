@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>challenge-c1-1-hit-the-line</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1 id="challenge-c1.1-hit-the-line-straight-line-accuracy">Challenge
+C1.1 – Hit the Line (Straight-Line Accuracy)</h1>
+<blockquote>
+<p>Environment: Spike App IDE with our FLL robot and
+<code>master.py</code></p>
+</blockquote>
+<h2 id="challenge-goal">Challenge Goal</h2>
+<p>Use <code>drive_forward</code> to drive straight out of base and stop
+with the front of the robot <em>exactly</em> on a marked line on the
+mat.</p>
+<p>You’ll tune <code>min_speed</code>, <code>max_speed</code>,
+<code>target_degrees</code>, and <code>kP</code> to make the distance
+and heading reliable.</p>
+<hr />
+<h2 id="setup">Setup</h2>
+<ol type="1">
+<li>On the FLL mat (or practice mat), choose a clear straight path from
+base.</li>
+<li>Place a strip of tape or use an existing mat line as your
+<strong>target line</strong>.</li>
+<li>Mark a consistent <strong>starting position</strong> in base:
+<ul>
+<li>Front bumper against the base wall.</li>
+<li>Robot centered on a known reference.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="required-methods-from-master.py">Required Methods from
+<code>master.py</code></h2>
+<ul>
+<li><code>drive_forward(min_speed, max_speed, target_degrees, kP=0.5)</code></li>
+<li><code>mission_selector()</code> and a <code>mission_n</code> (for
+example, <code>mission_0</code> or a new mission) to run your test.</li>
+</ul>
+<hr />
+<h2 id="step-1-create-a-test-mission">Step 1 – Create a Test
+Mission</h2>
+<p>Pick a mission slot and create a simple test mission:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_c1_hit_line():</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initial guess – tune these values on the field</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    drive_forward(<span class="dv">20</span>, <span class="dv">250</span>, <span class="dv">720</span>, kP<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<p>Add this to <code>master.py</code>, and then add it into the
+<code>missions</code> list in <code>mission_selector</code> (or
+temporarily swap it into an existing mission number you’re not using
+yet).</p>
+<hr />
+<h2 id="step-2-first-field-trials">Step 2 – First Field Trials</h2>
+<p>On the field:</p>
+<ol type="1">
+<li>Place the robot in the marked start position.</li>
+<li>Start the <code>master</code> program on the hub.</li>
+<li>Use the selector to choose your challenge mission number.</li>
+<li>Press LEFT to run it.</li>
+</ol>
+<p>Observe: - Does the robot reach the line, fall short, or overshoot? -
+Does it drift left or right?</p>
+<hr />
+<h2 id="step-3-tuning-distance-target_degrees">Step 3 – Tuning Distance
+(<code>target_degrees</code>)</h2>
+<p>Adjust <code>target_degrees</code> until the front of the robot stops
+on the line:</p>
+<ul>
+<li>If it stops <strong>short</strong> of the line:
+<ul>
+<li>Increase <code>target_degrees</code> (e.g., 720 → 760 → 800).</li>
+</ul></li>
+<li>If it stops <strong>past</strong> the line:
+<ul>
+<li>Decrease <code>target_degrees</code> (e.g., 720 → 680 → 650).</li>
+</ul></li>
+</ul>
+<p>Record your trials:</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 6%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th>Test</th>
+<th>min_speed</th>
+<th>max_speed</th>
+<th>target_degrees</th>
+<th>kP</th>
+<th>Result / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20</td>
+<td>250</td>
+<td>720</td>
+<td>0.5</td>
+<td>Stopped 5 cm before line</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20</td>
+<td>250</td>
+<td>780</td>
+<td>0.5</td>
+<td>Slight overshoot</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20</td>
+<td>250</td>
+<td>760</td>
+<td>0.5</td>
+<td>Front bumper on the line</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-4-tuning-straightness-kp-and-speeds">Step 4 – Tuning
+Straightness (<code>kP</code> and Speeds)</h2>
+<p>If the robot drifts left or right on the way to the line:</p>
+<ul>
+<li>Increase <code>kP</code> slightly (e.g., 0.5 → 0.6 → 0.7) to apply
+stronger yaw correction.</li>
+<li>If it starts to “wiggle” or oscillate, reduce <code>kP</code> a
+bit.</li>
+</ul>
+<p>Once the path is straight and the distance is correct: - Try
+increasing <code>max_speed</code> to make the run faster. - Keep
+<code>min_speed</code> low (e.g., 20) for gentle start/stop.</p>
+<p>Update your table with new tests:</p>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 6%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Test</th>
+<th>min_speed</th>
+<th>max_speed</th>
+<th>target_degrees</th>
+<th>kP</th>
+<th>Result / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>20</td>
+<td>250</td>
+<td>760</td>
+<td>0.6</td>
+<td>Straighter, good stop</td>
+</tr>
+<tr>
+<td>5</td>
+<td>20</td>
+<td>300</td>
+<td>760</td>
+<td>0.6</td>
+<td>Faster, still accurate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="success-criteria">Success Criteria</h2>
+<p>You’ve completed this challenge when:</p>
+<ul>
+<li>Starting from the marked base position, the robot:
+<ul>
+<li>Drives straight using <code>drive_forward</code>.</li>
+<li>Stops with its front bumper consistently on or within ~1–2 cm of the
+target line.</li>
+</ul></li>
+<li>You’ve written down the tuned parameters that work reliably with
+your robot.</li>
+</ul>
+<p>These tuned values become a building block for real missions that
+require precise “drive to here” segments.</p>
+</body>
+</html>

@@ -132,7 +132,53 @@ sensor yaw (<code>tilt_angles()[0]</code>) reaching
 <p>Concept: - The robot <strong>spins right</strong> without
 significantly moving forward or backward.</p>
 <hr />
-<h2 id="mental-model-wheels-during-a-right-spin">2. Mental Model –
+<h2 id="inside-the-full-spin_right-method">2. Inside the Full
+<code>spin_right</code> Method</h2>
+<p>Here is the method again, with explanation:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spin_right(speed, target_angle_degrees):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    In-place spin to the RIGHT using opposite wheel directions.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    - Left motor (port.A) runs forward.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - Right motor (port.E) runs backward.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - Stops when yaw reaches -target_angle_degrees.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) Reset yaw so current heading is 0 degrees</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    motion_sensor.reset_yaw(<span class="dv">0</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2) Turn until yaw reaches the requested right angle (negative)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> motion_sensor.tilt_angles()[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="op">-</span>target_angle_degrees:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward on left, backward on right (relative to drive_forward)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        motor.run(port.A, <span class="op">-</span>speed)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        motor.run(port.E, <span class="op">-</span>speed)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3) Stop both wheels with brake</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.A, stop<span class="op">=</span>motor.BRAKE)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.E, stop<span class="op">=</span>motor.BRAKE)</span></code></pre></div>
+<p>Walk-through: - <code>motion_sensor.reset_yaw(0)</code>: - Sets yaw
+to 0 at the current orientation. - From here, yaw reports how far we’ve
+turned from that starting heading. - Yaw sign convention: - Right turns
+make yaw <strong>negative</strong>. - Left turns make yaw
+<strong>positive</strong>. - The <code>while</code> loop: - Reads
+<code>yaw = motion_sensor.tilt_angles()[0]</code>. - While
+<code>yaw &gt; -target_angle_degrees</code>, the robot keeps spinning
+right. - As we turn right, yaw decreases from 0 toward the negative
+target. - Motor commands: - <code>motor.run(port.A, -speed)</code> and
+<code>motor.run(port.E, -speed)</code> are chosen to produce an in‑place
+spin to the right given the wiring used in <code>drive_forward</code>. -
+Both wheels move with equal magnitude but opposite effective directions
+relative to straight driving, so the robot rotates rather than
+translating. - When yaw reaches <code>-target_angle_degrees</code>: -
+The loop exits. - <code>motor.stop(port.A, ...)</code> and
+<code>motor.stop(port.E, ...)</code> brake both wheels to hold the final
+heading.</p>
+<p>Key idea: - <code>spin_right</code> is a yaw‑controlled
+<strong>in‑place rotation</strong> to the right: we reset yaw, drive
+both wheels in a pattern that causes rotation, and stop exactly when yaw
+hits the negative target angle.</p>
+<hr />
+<h2 id="mental-model-wheels-during-a-right-spin">3. Mental Model –
 Wheels During a Right Spin</h2>
 <p>Ask students: - “For a right spin, do we want the robot’s nose to
 turn right without drifting sideways?”<br />
@@ -143,18 +189,18 @@ center.</p>
 <p>Compare to pivots: - Pivot: one wheel moves, one is still. - Spin:
 <strong>both</strong> wheels move → tight, centered turn.</p>
 <hr />
-<h2 id="simple-field-test-mission">3. Simple Field Test Mission</h2>
+<h2 id="simple-field-test-mission">4. Simple Field Test Mission</h2>
 <p>Create or reuse a mission that calls <code>spin_right</code>:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_spin_right_test():</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust speed and angle on the field</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    spin_right(<span class="dv">200</span>, <span class="dv">90</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> mission_spin_right_test():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust speed and angle on the field</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    spin_right(<span class="dv">200</span>, <span class="dv">90</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
 <p>On the field: 1. Place the robot in open space. 2. Run the mission
 from the selector. 3. Observe: - Does the robot spin roughly in place? -
 Does it rotate right (clockwise) as expected?</p>
 <hr />
-<h2 id="tuning-the-spin-angle">4. Tuning the Spin Angle</h2>
+<h2 id="tuning-the-spin-angle">5. Tuning the Spin Angle</h2>
 <p>Goal: Achieve a reliable ~90° right spin at a chosen speed.</p>
 <p>Steps: 1. Start with <code>speed = 200</code>,
 <code>target_angle_degrees = 90</code>. 2. Run several times and see
@@ -197,7 +243,7 @@ where the robot ends up facing. 3. If it <strong>under‑spins</strong>
 orientation. - Choose a “standard” <code>spin_right</code> setting
 (speed + angle) once it’s reliable.</p>
 <hr />
-<h2 id="connecting-spin_right-to-missions">5. Connecting
+<h2 id="connecting-spin_right-to-missions">6. Connecting
 <code>spin_right</code> to Missions</h2>
 <p>Ask: - “When would a right spin be better than a right pivot?” -
 Example: in tight spaces where you must rotate without bumping nearby
