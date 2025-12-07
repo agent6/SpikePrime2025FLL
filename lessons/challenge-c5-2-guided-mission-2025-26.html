@@ -247,64 +247,52 @@ C5.2 – Guided Mission 2025‑26 (Competition Ready)</h1>
 Mission 2025‑26</strong> model, and your <code>master.py</code>
 helpers.</p>
 </blockquote>
-<h2 id="challenge-goal">Challenge Goal</h2>
-<p>Coach your team through a <strong>full FIRST® LEGO® League–style
-mission</strong> using the official Guided Mission model:</p>
+<h2 id="prepare">1. Prepare</h2>
 <ul>
-<li>Start from base with a consistent launch.</li>
-<li>Drive to the Guided Mission model (often using line following).</li>
-<li>Activate the model reliably.</li>
-<li>Return to a safe position.</li>
+<li>Read the student material for the Guided Mission in the SPIKE
+App.</li>
+<li>Build the <strong>Driving Base with Color Sensor</strong>.</li>
+<li>Build the <strong>Guided Mission 2025‑26 model</strong> and place it
+on the mat:
+<ul>
+<li>Check the Robot Game Rulebook for the correct position.</li>
+<li>Make sure the model is built correctly and moves as it should.</li>
+<li>Carefully apply Dual Lock so it stays in place.</li>
+</ul></li>
+<li>Confirm your robot wiring matches your team standard:
+<ul>
+<li>Drive motors on <code>port.A</code> and <code>port.E</code>.</li>
+<li>Color sensor on the correct port for line following.</li>
+</ul></li>
 </ul>
 <p>You’ll focus on <strong>strategy, consistency, and teamwork</strong>,
 not just code.</p>
 <hr />
-<h2 id="setup">Setup</h2>
+<h2 id="engage-discussion-video">2. Engage (Discussion + Video)</h2>
+<p>Ignite a discussion using questions like:</p>
+<ul>
+<li>What is the robot doing in this mission?</li>
+<li>How does the robot <strong>reach</strong> the model?</li>
+<li>How does the robot <strong>activate</strong> the model?</li>
+<li>What is the ideal balance between <strong>speed and
+accuracy</strong> here?</li>
+</ul>
+<p>Then have students watch the Guided Mission video in the SPIKE App so
+they know what they’re about to build.</p>
+<hr />
+<h2 id="explore-build-and-program">3. Explore (Build and Program)</h2>
+<p>On the field:</p>
 <ol type="1">
-<li>Build the <strong>Driving Base with Color Sensor</strong> (from the
-SPIKE app).</li>
-<li>Build the <strong>Guided Mission 2025‑26 model</strong> and place it
-on the mat:
+<li>Set up the Guided Mission model on the official mat.</li>
+<li>Follow the SPIKE App instructions to write a program that:
 <ul>
-<li>Follow the Robot Game Rulebook for the exact position.</li>
-<li>Use Dual Lock and check that the model moves correctly.</li>
-</ul></li>
-<li>Make sure your robot ports match your team standard:
-<ul>
-<li>Drive motors on <code>port.A</code> and <code>port.E</code>.</li>
-<li>Color sensor on the correct port from your build (for line
-following).</li>
+<li>Drives from the launch area.</li>
+<li>Uses line following and/or turns to reach the model.</li>
+<li>Activates the model to raise the connector.</li>
 </ul></li>
 </ol>
-<hr />
-<h2 id="required-tools-and-helpers">Required Tools and Helpers</h2>
-<ul>
-<li>Your choice of driving and turning helpers from
-<code>master.py</code>:
-<ul>
-<li><code>drive_forward</code>, <code>drive_backward</code></li>
-<li><code>pivot_*</code> or <code>spin_*</code> helpers (if needed)</li>
-</ul></li>
-<li>Color sensor line‑following logic (from earlier line‑following
-lessons).</li>
-<li><code>mission_selector()</code> and a dedicated
-<code>mission_n</code> for this Guided Mission.</li>
-</ul>
-<hr />
-<h2 id="step-1-discuss-the-mission">Step 1 – Discuss the Mission</h2>
-<p>As a team, answer:</p>
-<ul>
-<li>What is the robot supposed to <strong>do</strong> at the model?</li>
-<li>Where does the robot <strong>start</strong> and where should it
-<strong>end</strong>?</li>
-<li>What obstacles or other models are nearby?</li>
-<li>What is more important for this run: <strong>speed</strong> or
-<strong>accuracy</strong>?</li>
-</ul>
-<p>Write down your answers on a whiteboard or worksheet.</p>
-<hr />
-<h2 id="step-2-build-the-first-program">Step 2 – Build the First
-Program</h2>
+<p>In your <code>master.py</code>, create a new <code>mission_n</code>,
+for example:</p>
 <p>Create a new <code>mission_n</code> in <code>master.py</code>, for
 example:</p>
 <div class="sourceCode" id="cb1"><pre
@@ -320,58 +308,87 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <p>Hook this mission into the <code>missions</code> list in
 <code>mission_selector</code> so you can launch it from the hub.</p>
 <hr />
-<h2 id="step-3-practice-and-refine">Step 3 – Practice and Refine</h2>
-<p>Have each team:</p>
-<ol type="1">
-<li>Practice <strong>lining up</strong> the robot in base the same way
-every time.</li>
-<li>Run the Guided Mission from the mission selector.</li>
-<li>Observe:
+<h2 id="explain-make-the-robots-job-clear">4. Explain (Make the Robot’s
+Job Clear)</h2>
+<p>Pause coding and talk about:</p>
 <ul>
-<li>Does it reach the model consistently?</li>
-<li>Does it activate the model every time?</li>
-<li>Where does it stop at the end?</li>
+<li>Which parts of the robot are most important for triggering the
+model.</li>
+<li>How the program makes the robot:
+<ul>
+<li>Reach the model.</li>
+<li>Activate it reliably (attachment, bumper, or precise stopping).</li>
+</ul></li>
+</ul>
+<p>Have students describe, in words, <strong>how their code makes the
+model raise the connector</strong>.</p>
+<hr />
+<h2 id="elaborate-practice-lines-and-strategy">5. Elaborate (Practice,
+Lines, and Strategy)</h2>
+<p>Give teams time to <strong>practice launches</strong>:</p>
+<ol type="1">
+<li>Line up the robot in base the same way every time.</li>
+<li>Send it on the mission to activate the model.</li>
+<li>After several runs, ask:
+<ul>
+<li>Did you notice anything important, like starting in the
+<strong>left</strong> launch area and ending in the
+<strong>right</strong>?</li>
+<li>Does your path pass other missions on the way?</li>
+<li>What have you learned about <strong>following lines</strong> that
+could help you reach other missions?</li>
 </ul></li>
 </ol>
-<p>Use your earlier line‑following knowledge (color or reflected light
-modes) to improve the approach path.</p>
-<hr />
-<h2 id="step-4-strategy-and-optimization">Step 4 – Strategy and
-Optimization</h2>
-<p>Ask the team:</p>
+<p>Encourage teams to adjust:</p>
 <ul>
-<li>Can we start in the <strong>right launch area</strong> instead of
-the left?</li>
-<li>Can we chain <strong>another mission</strong> before or after this
-one?</li>
-<li>What is the best <strong>balance between speed and
-reliability</strong>?</li>
+<li>Starting position and orientation.</li>
+<li>Line‑following gains or thresholds.</li>
+<li>Speeds to balance speed and accuracy.</li>
 </ul>
-<p>Tune:</p>
+<p>Leave time at the end for <strong>cleanup</strong> of the field and
+models.</p>
+<hr />
+<h2 id="evaluate-rubrics-and-reflection">6. Evaluate (Rubrics and
+Reflection)</h2>
+<p>Use a simple observation checklist (for example: 1 = partially
+accomplished, 2 = fully accomplished, 3 = overachieved) and rate:</p>
 <ul>
-<li>Speeds and distances in your drive helpers.</li>
-<li>Line‑following gains and thresholds.</li>
-<li>Final stopping point so the robot ends ready for the next
+<li>Students worked well as a team to complete the mission.</li>
+<li>Students chained more than one mission in the same run (if
+attempted).</li>
+<li>Students can present their robot, program, and mission
+strategy.</li>
+</ul>
+<h3 id="selfassessment-bricks">Self‑Assessment (Bricks)</h3>
+<p>Have each student choose a brick:</p>
+<ul>
+<li><strong>Blue</strong>: I’ve successfully completed one mission.</li>
+<li><strong>Yellow</strong>: I’ve successfully completed more than one
 mission.</li>
+<li><strong>Violet</strong>: Our team presented our robot, program, and
+strategy, and everyone spoke.</li>
+</ul>
+<h3 id="peerassessment">Peer‑Assessment</h3>
+<p>Invite students to:</p>
+<ul>
+<li>Score a teammate’s performance using the same brick scale.</li>
+<li>Give <strong>constructive feedback</strong> on how their partners
+can improve the next run.</li>
 </ul>
 <hr />
-<h2 id="assessment-reflection">Assessment &amp; Reflection</h2>
-<p>Use checklists or colored bricks (blue/yellow/violet) to rate:</p>
+<h2 id="differentiation-ideas">Differentiation Ideas</h2>
 <ul>
-<li>Did the team <strong>work together</strong> to complete the Guided
-Mission?</li>
-<li>Did they chain <strong>more than one mission</strong> in a single
-run?</li>
-<li>Can they <strong>present</strong> their robot, program, and mission
-strategy to a coach?</li>
-</ul>
-<p>Optional extension:</p>
+<li>To <strong>simplify</strong>:
 <ul>
-<li>Have students prepare a short presentation explaining how they:
+<li>Review a line‑following lesson (like a “Training Camp 3” style
+activity) showing color mode vs reflected light intensity.</li>
+</ul></li>
+<li>To <strong>extend</strong>:
 <ul>
-<li>Designed their strategy.</li>
-<li>Balanced speed vs. accuracy.</li>
-<li>Improved their run over time.</li>
+<li>Change the program to start from the <strong>right</strong> launch
+area.</li>
+<li>Add another FLL mission before or after the Guided Mission in the
+same run.</li>
 </ul></li>
 </ul>
 </body>

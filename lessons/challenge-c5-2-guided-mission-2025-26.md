@@ -2,55 +2,46 @@
 
 > Environment: SPIKE App IDE, official FLL mat with the **Guided Mission 2025‑26** model, and your `master.py` helpers.
 
-## Challenge Goal
+## 1. Prepare
 
-Coach your team through a **full FIRST® LEGO® League–style mission** using the official Guided Mission model:
-
-- Start from base with a consistent launch.
-- Drive to the Guided Mission model (often using line following).
-- Activate the model reliably.
-- Return to a safe position.
+- Read the student material for the Guided Mission in the SPIKE App.
+- Build the **Driving Base with Color Sensor**.
+- Build the **Guided Mission 2025‑26 model** and place it on the mat:
+  - Check the Robot Game Rulebook for the correct position.
+  - Make sure the model is built correctly and moves as it should.
+  - Carefully apply Dual Lock so it stays in place.
+- Confirm your robot wiring matches your team standard:
+  - Drive motors on `port.A` and `port.E`.
+  - Color sensor on the correct port for line following.
 
 You’ll focus on **strategy, consistency, and teamwork**, not just code.
 
 ---
 
-## Setup
+## 2. Engage (Discussion + Video)
 
-1. Build the **Driving Base with Color Sensor** (from the SPIKE app).
-2. Build the **Guided Mission 2025‑26 model** and place it on the mat:
-   - Follow the Robot Game Rulebook for the exact position.
-   - Use Dual Lock and check that the model moves correctly.
-3. Make sure your robot ports match your team standard:
-   - Drive motors on `port.A` and `port.E`.
-   - Color sensor on the correct port from your build (for line following).
+Ignite a discussion using questions like:
 
----
+- What is the robot doing in this mission?
+- How does the robot **reach** the model?
+- How does the robot **activate** the model?
+- What is the ideal balance between **speed and accuracy** here?
 
-## Required Tools and Helpers
-
-- Your choice of driving and turning helpers from `master.py`:
-  - `drive_forward`, `drive_backward`
-  - `pivot_*` or `spin_*` helpers (if needed)
-- Color sensor line‑following logic (from earlier line‑following lessons).
-- `mission_selector()` and a dedicated `mission_n` for this Guided Mission.
+Then have students watch the Guided Mission video in the SPIKE App so they know what they’re about to build.
 
 ---
 
-## Step 1 – Discuss the Mission
+## 3. Explore (Build and Program)
 
-As a team, answer:
+On the field:
 
-- What is the robot supposed to **do** at the model?
-- Where does the robot **start** and where should it **end**?
-- What obstacles or other models are nearby?
-- What is more important for this run: **speed** or **accuracy**?
+1. Set up the Guided Mission model on the official mat.
+2. Follow the SPIKE App instructions to write a program that:
+   - Drives from the launch area.
+   - Uses line following and/or turns to reach the model.
+   - Activates the model to raise the connector.
 
-Write down your answers on a whiteboard or worksheet.
-
----
-
-## Step 2 – Build the First Program
+In your `master.py`, create a new `mission_n`, for example:
 
 Create a new `mission_n` in `master.py`, for example:
 
@@ -70,49 +61,70 @@ Hook this mission into the `missions` list in `mission_selector` so you can laun
 
 ---
 
-## Step 3 – Practice and Refine
+## 4. Explain (Make the Robot’s Job Clear)
 
-Have each team:
+Pause coding and talk about:
 
-1. Practice **lining up** the robot in base the same way every time.
-2. Run the Guided Mission from the mission selector.
-3. Observe:
-   - Does it reach the model consistently?
-   - Does it activate the model every time?
-   - Where does it stop at the end?
+- Which parts of the robot are most important for triggering the model.
+- How the program makes the robot:
+  - Reach the model.
+  - Activate it reliably (attachment, bumper, or precise stopping).
 
-Use your earlier line‑following knowledge (color or reflected light modes) to improve the approach path.
+Have students describe, in words, **how their code makes the model raise the connector**.
 
 ---
 
-## Step 4 – Strategy and Optimization
+## 5. Elaborate (Practice, Lines, and Strategy)
 
-Ask the team:
+Give teams time to **practice launches**:
 
-- Can we start in the **right launch area** instead of the left?
-- Can we chain **another mission** before or after this one?
-- What is the best **balance between speed and reliability**?
+1. Line up the robot in base the same way every time.
+2. Send it on the mission to activate the model.
+3. After several runs, ask:
+   - Did you notice anything important, like starting in the **left** launch area and ending in the **right**?
+   - Does your path pass other missions on the way?
+   - What have you learned about **following lines** that could help you reach other missions?
 
-Tune:
+Encourage teams to adjust:
 
-- Speeds and distances in your drive helpers.
-- Line‑following gains and thresholds.
-- Final stopping point so the robot ends ready for the next mission.
+- Starting position and orientation.
+- Line‑following gains or thresholds.
+- Speeds to balance speed and accuracy.
+
+Leave time at the end for **cleanup** of the field and models.
 
 ---
 
-## Assessment & Reflection
+## 6. Evaluate (Rubrics and Reflection)
 
-Use checklists or colored bricks (blue/yellow/violet) to rate:
+Use a simple observation checklist (for example: 1 = partially accomplished, 2 = fully accomplished, 3 = overachieved) and rate:
 
-- Did the team **work together** to complete the Guided Mission?
-- Did they chain **more than one mission** in a single run?
-- Can they **present** their robot, program, and mission strategy to a coach?
+- Students worked well as a team to complete the mission.
+- Students chained more than one mission in the same run (if attempted).
+- Students can present their robot, program, and mission strategy.
 
-Optional extension:
+### Self‑Assessment (Bricks)
 
-- Have students prepare a short presentation explaining how they:
-  - Designed their strategy.
-  - Balanced speed vs. accuracy.
-  - Improved their run over time.
+Have each student choose a brick:
+
+- **Blue**: I’ve successfully completed one mission.
+- **Yellow**: I’ve successfully completed more than one mission.
+- **Violet**: Our team presented our robot, program, and strategy, and everyone spoke.
+
+### Peer‑Assessment
+
+Invite students to:
+
+- Score a teammate’s performance using the same brick scale.
+- Give **constructive feedback** on how their partners can improve the next run.
+
+---
+
+## Differentiation Ideas
+
+- To **simplify**:
+  - Review a line‑following lesson (like a “Training Camp 3” style activity) showing color mode vs reflected light intensity.
+- To **extend**:
+  - Change the program to start from the **right** launch area.
+  - Add another FLL mission before or after the Guided Mission in the same run.
 
