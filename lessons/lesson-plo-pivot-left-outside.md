@@ -45,7 +45,57 @@ Concept:
 
 ---
 
-## 2. Quick Mental Model
+## 2. Inside the Full `pivot_left_outside` Method
+
+Let’s break down what the method is doing step-by-step:
+
+```python
+def pivot_left_outside(speed, target_angle_degrees):
+    """
+    Pivot turn to the LEFT using the outside wheel.
+
+    Left turn, outside wheel moves FORWARD:
+    - Right motor (port.E) is the outside wheel and moves forward.
+    - Left motor (port.A) stays stopped.
+    The motion sensor yaw is used as the angle reference.
+    """
+    # 1) Reset yaw so 0 = current heading
+    motion_sensor.reset_yaw(0)
+
+    # 2) Keep turning until the yaw angle reaches target_angle_degrees
+    while motion_sensor.tilt_angles()[0] < target_angle_degrees:
+        # Only the right wheel moves; left wheel stays still
+        motor.run(port.E, speed)
+
+    # 3) Once we hit the angle, stop the moving wheel
+    motor.stop(port.E, stop=motor.BRAKE)
+```
+
+Walk-through:
+- `motion_sensor.reset_yaw(0)`:
+  - Sets the yaw reading to 0 at the start of the pivot.
+  - From this point, yaw measures how many degrees we’ve turned left/right from that starting facing.
+- The `while` loop:
+  - Reads yaw with `motion_sensor.tilt_angles()[0]`.
+  - As the robot turns left, this yaw value increases.
+  - While yaw is **less than** `target_angle_degrees`, the right wheel keeps running at `speed`.
+- Motor commands:
+  - `motor.run(port.E, speed)`:
+    - Only the right wheel (port E) is powered.
+    - The left wheel (port A) stays stopped, acting as the pivot point.
+  - This causes the robot to swing left around the left wheel.
+- When yaw reaches or exceeds `target_angle_degrees`:
+  - The loop exits.
+  - `motor.stop(port.E, stop=motor.BRAKE)` brakes the moving wheel to hold the angle.
+
+Key idea:
+- `pivot_left_outside` is a **yaw-based “turn until angle” loop** where:
+  - We control **one wheel**.
+  - The **motion sensor** decides when to stop.
+
+---
+
+## 3. Quick Mental Model
 
 Ask students:
 - “If only the right wheel moves forward, which way will the robot turn?”  
@@ -59,7 +109,7 @@ Relate to geometry:
 
 ---
 
-## 3. Simple Field Test Mission
+## 4. Simple Field Test Mission
 
 Create or reuse a mission that calls `pivot_left_outside`:
 
@@ -79,7 +129,7 @@ On the field:
 
 ---
 
-## 4. Tuning the Pivot Angle
+## 5. Tuning the Pivot Angle
 
 Goal: Achieve a reliable ~90° left pivot for a chosen speed.
 
@@ -105,7 +155,7 @@ Encourage:
 
 ---
 
-## 5. Connecting to Real Missions
+## 6. Connecting to Real Missions
 
 Ask:
 - “Where in our missions do we need a precise left turn around one wheel?”
@@ -119,5 +169,4 @@ Activity:
 This lesson builds intuition for `pivot_left_outside`, which pairs with the other pivot helpers to handle all the directional turns you need on the FLL field.  
 
 ---
-
 
