@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-17-importing-libraries</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1
+id="lesson-17-importing-libraries-connecting-software-hardware">Lesson
+17 – Importing Libraries (Connecting Software &amp; Hardware)</h1>
+<blockquote>
+<p>Based on the LEGO Education lesson “Importing Libraries”<br />
+Original: <a
+href="https://education.lego.com/en-us/lessons/prime-python-communicating-ideas/importing-libraries/"
+class="uri">https://education.lego.com/en-us/lessons/prime-python-communicating-ideas/importing-libraries/</a></p>
+</blockquote>
+<h2 id="questions-to-investigate">Questions to Investigate</h2>
+<ul>
+<li>How can engineers and computer programmers work together to create a
+way to <strong>communicate ideas</strong> to others?</li>
+<li>Why do we need to <strong>import libraries</strong> in Python to
+connect software and hardware?</li>
+</ul>
+<p>Time: ~45 minutes<br />
+Level: Beginner (Grades 6–8)</p>
+<hr />
+<h2 id="prepare">Prepare</h2>
+<ul>
+<li>Decide groupings (ideally <strong>2 students per SPIKE Prime
+set</strong>).</li>
+<li>Set expectations for <strong>teamwork</strong> and <strong>materials
+management</strong>.</li>
+<li>Check that SPIKE Prime hubs are <strong>charged</strong>, especially
+if using Bluetooth.</li>
+</ul>
+<hr />
+<h2 id="engage-recipe-analogy">1. Engage – Recipe Analogy</h2>
+<p>Start a discussion:</p>
+<ul>
+<li>When you follow a <strong>recipe</strong>, you gather:
+<ul>
+<li>Ingredients (things you use).</li>
+<li>Tools (stove, oven, mixer, spatula, etc.).</li>
+</ul></li>
+<li>In Python, before you “cook” (run your program), you must “gather”:
+<ul>
+<li>The <strong>libraries</strong> (words and modules) that let your
+code talk to the hardware.</li>
+</ul></li>
+</ul>
+<p>Key idea:</p>
+<ul>
+<li>Importing libraries is like getting the right tools out
+<strong>before</strong> you start cooking.</li>
+</ul>
+<hr />
+<h2 id="explore-what-is-a-library">2. Explore – What Is a Library?</h2>
+<p>Explain:</p>
+<ul>
+<li>Python is <strong>text‑based</strong>: spelling, capitalization, and
+punctuation all matter.</li>
+<li>For the SPIKE App to talk to the SPIKE Prime hardware, we must
+<strong>import</strong> the right libraries.</li>
+</ul>
+<p>Hands‑on:</p>
+<ol type="1">
+<li>Have students open their SPIKE Prime sets and remove:
+<ul>
+<li>1 hub</li>
+<li>3 motors</li>
+<li>3 sensors</li>
+</ul></li>
+<li>Identify each hardware piece together.</li>
+<li>Turn on the hub (large center button).</li>
+<li>Ask: “How do you think we would <strong>import</strong> each piece
+of hardware into the program?”</li>
+</ol>
+<p>Show the <strong>introductory program</strong> in the SPIKE App
+Python canvas:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> light_matrix</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># write your code here</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> light_matrix.write(<span class="st">&quot;Hi!&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>The <code>from hub import light_matrix</code> line is importing a
+<strong>library</strong> from the hub module.</li>
+<li>Ask students to match hardware pieces to typical library names:
+<ul>
+<li><code>light_matrix</code> – 5×5 grid on the hub front.</li>
+<li><code>button</code> – three front buttons (left, center,
+right).</li>
+<li><code>light</code> – ring light around the center button.</li>
+<li><code>force_sensor</code> – sensor with a black push button.</li>
+<li><code>motion_sensor</code> – internal gyro/tilt sensor inside the
+hub.</li>
+<li><code>speaker</code> – built‑in speaker on the hub.</li>
+<li><code>color_sensor</code> – small square sensor with one light.</li>
+<li><code>app</code> – used to play sounds (software layer).</li>
+<li><code>distance_sensor</code> – ultrasonic sensor with two
+“eyes”.</li>
+<li><code>motor</code> – any single motor.</li>
+<li><code>motor_pair</code> – two motors working together.</li>
+</ul></li>
+</ul>
+<p>Have students return all hardware neatly to the set trays.</p>
+<hr />
+<h2 id="explain-why-import-first">3. Explain – Why Import First?</h2>
+<p>Guide questions:</p>
+<ul>
+<li>Why is it important to <strong>import a library</strong> before
+writing code that uses it?</li>
+<li>What kinds of things can be imported for use with the hub?</li>
+<li>How are <strong>motors</strong> imported differently from
+<code>light_matrix</code>?</li>
+</ul>
+<p>Clarify:</p>
+<ul>
+<li>Libraries are usually imported at the <strong>top</strong> of the
+<code>.py</code> file.</li>
+<li>They should be imported <strong>once</strong>, then reused
+throughout the program.</li>
+<li>The <code>.py</code> file is the Python program (you don’t see
+<code>.py</code> on the canvas, but it’s the underlying file).</li>
+</ul>
+<hr />
+<h2 id="elaborate-practice-importing-libraries">4. Elaborate – Practice
+Importing Libraries</h2>
+<p>Have students open a <strong>new Python project</strong> in the SPIKE
+App and connect their hub.</p>
+<p>They will see a starter program similar to:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> light_matrix</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># write your code here</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> light_matrix.write(<span class="st">&quot;Hi!&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Activities:</p>
+<ol type="1">
+<li>Ask students:
+<ul>
+<li>Which libraries have been imported? (Lines 1–2.)</li>
+<li>Which hardware is used in
+<code>await light_matrix.write("Hi!")</code>?</li>
+</ul></li>
+<li>Run the program:
+<ul>
+<li>The light matrix should scroll “Hi!” across the display.</li>
+</ul></li>
+<li>Troubleshooting tips:
+<ul>
+<li>Check hub connection icon:
+<ul>
+<li>Green ring = USB connected.</li>
+<li>Blue ring = Bluetooth connected.</li>
+<li>Yellow = disconnected.</li>
+</ul></li>
+</ul></li>
+</ol>
+<p>Introduce the <strong>Knowledge Base</strong> in the SPIKE App:</p>
+<ul>
+<li>Have students open the right‑side panel and read:
+<ul>
+<li>“1. Introduction to Python”</li>
+<li>Importing libraries section.</li>
+</ul></li>
+<li>Discuss the statement:
+<ul>
+<li>“The imported libraries are located at the beginning of the .py file
+and should appear only once in the program.”</li>
+</ul></li>
+</ul>
+<p>Experiment:</p>
+<ul>
+<li>Open another new Python project.</li>
+<li>Change the string in <code>write("Hi!")</code> to different phrases
+to see how the behavior changes.</li>
+<li>Optionally add more imports (for example
+<code>from hub import button</code>) and talk about what new hardware
+becomes available.</li>
+</ul>
+<hr />
+<h2 id="evaluate-understanding-and-reflection">5. Evaluate –
+Understanding and Reflection</h2>
+<p>Teacher observation prompts:</p>
+<ul>
+<li>What happened on your hub when you ran the program?</li>
+<li>Which <strong>libraries</strong> did you use in this program?</li>
+<li>Why do you need to <strong>import</strong> different parts of the
+hub before using them?</li>
+<li>How can engineers and programmers work together so software and
+hardware <strong>communicate ideas</strong> clearly?</li>
+</ul>
+<p>Materials management reminder:</p>
+<ul>
+<li>Parts should <strong>not be shared</strong> between sets.</li>
+<li>If a part is missing, students should tell the teacher right
+away.</li>
+</ul>
+<p>Self‑scoring guide for materials management (1–3):</p>
+<ol type="1">
+<li>Materials are not all in the correct tray; some parts are still left
+out or assembled.</li>
+<li>Materials are in the correct locations, but only
+<strong>one</strong> partner helped.</li>
+<li>Both partners worked together and all parts are correctly put
+away.</li>
+</ol>
+<p>Student self‑assessment (journal):</p>
+<ul>
+<li>Why do you need to <strong>import libraries</strong> at the
+beginning of a Python program?</li>
+<li>What characteristics of a <strong>good teammate</strong> did you
+show today?</li>
+<li>Rate yourself 1–3 on <strong>time management</strong>.</li>
+<li>Rate yourself 1–3 on <strong>materials (parts)
+management</strong>.</li>
+</ul>
+</body>
+</html>

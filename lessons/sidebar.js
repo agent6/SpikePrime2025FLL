@@ -12,6 +12,11 @@
     { id: "lesson-05-spike-hardware-and-ports", title: "Lesson 5 – Spike Hardware & Ports" },
     { id: "lesson-06-motors-encoders-motion-sensor", title: "Lesson 6 – Motors, Encoders, Motion Sensor" },
     { id: "lesson-07-async-and-runloop", title: "Lesson 7 – Async and runloop" },
+    { id: "lesson-16-controlling-motion-with-tilt", title: "Lesson 16 – Controlling Motion with Tilt" },
+    { id: "lesson-17-importing-libraries", title: "Lesson 17 – Importing Libraries" },
+    { id: "lesson-18-making-moves-with-motors", title: "Lesson 18 – Making Moves with Motors" },
+    { id: "lesson-19-start-sensing", title: "Lesson 19 – Start Sensing" },
+    { id: "lesson-20-new-moves-with-motors", title: "Lesson 20 – New Moves with Motors" },
 
     // Phase 3 – Core Movement & Attachments
     { id: "lesson-08-straight-driving", title: "Lesson 8 – Straight Driving" },
@@ -163,4 +168,3 @@
     inner.appendChild(bottomNav);
   }
 })();
-

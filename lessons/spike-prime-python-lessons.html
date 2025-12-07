@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>spike-prime-python-lessons</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1 id="lego-spike-prime-with-python-lessons">LEGO SPIKE Prime with
+Python Lessons</h1>
+<p>This page gives coaches, mentors, and students a quick overview of
+how to use the LEGO SPIKE Prime with Python lessons in this
+repository.</p>
+<hr />
+<h2 id="who-this-is-for">Who This Is For</h2>
+<ul>
+<li>FIRST LEGO League teams using a SPIKE Prime hub with <strong>Python
+(SPIKE 3)</strong>.</li>
+<li>Coaches who want a clear path from <strong>basic Python</strong> to
+<strong>competition‑ready missions</strong>.</li>
+<li>Students who prefer text‑based coding instead of blocks.</li>
+</ul>
+<hr />
+<h2 id="lesson-phases">Lesson Phases</h2>
+<p>The lessons are grouped into phases:</p>
+<ol type="1">
+<li><strong>Phase 1 – Python Basics (Online IDE)</strong><br />
+Use the browser playground at <a
+href="https://www.onlineide.pro/playground/python"
+class="uri">https://www.onlineide.pro/playground/python</a> to learn:
+<ul>
+<li>Variables, types, and expressions.</li>
+<li><code>if</code>/<code>elif</code>/<code>else</code> and loops.</li>
+<li>Functions, lists, and dictionaries.</li>
+</ul></li>
+<li><strong>Phase 2 – Spike Hardware &amp; Runtime</strong><br />
+Move into the <strong>SPIKE App IDE</strong> and learn:
+<ul>
+<li>Hub, ports, motors, and sensors.</li>
+<li>Encoders and the motion sensor.</li>
+<li><code>async</code>/<code>await</code> and <code>runloop</code>.</li>
+</ul></li>
+<li><strong>Phase 3 – Robot Helpers &amp; Missions</strong><br />
+Connect the lessons directly to <code>master.py</code>:
+<ul>
+<li>Straight driving, pivots, and spin turns.</li>
+<li>Attachments and async helpers.</li>
+<li><code>MotorIsStopped</code>, <code>mission_selector</code>, and
+<code>mission_0</code>–<code>mission_9</code>.</li>
+</ul></li>
+<li><strong>Challenges – Apply What You’ve Learned</strong><br />
+Use the challenge pages to:
+<ul>
+<li>Tune drives and turns on the FLL mat.</li>
+<li>Practice attachments and combined motion.</li>
+<li>Build and optimize full missions, including the Guided Mission
+2025–26.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="how-to-use-these-lessons">How To Use These Lessons</h2>
+<ol type="1">
+<li>Start at the <strong>Lessons Index</strong>: <code>index.html</code>
+<ul>
+<li>Follow lessons 1–4 in the online IDE.<br />
+</li>
+<li>Then switch to SPIKE for lessons 5 and beyond.</li>
+</ul></li>
+<li>Read the matching <strong>per‑helper lessons</strong>
+(DF/DB/PLO/PLI/etc.) when you introduce each function in
+<code>master.py</code>.</li>
+<li>After each phase, assign one or more <strong>Challenges</strong>
+from <code>challenges-index.html</code>.</li>
+</ol>
+<hr />
+<h2 id="helpful-references">Helpful References</h2>
+<ul>
+<li>Tufts SPIKE 3 Python API: <a
+href="https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html"
+class="uri">https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html</a><br />
+</li>
+<li>LEGO SPIKE Prime Python Programs (PDF):<br />
+<a
+href="https://assets.education.lego.com/v3/assets/blt293eea581807678a/blt02bcbffa2bf460b5/65df44a50f1d35dffdca4995/EN-US-SPIKE-Prime-Python-Programs_Feb-2024.pdf?locale=en-us"
+class="uri">https://assets.education.lego.com/v3/assets/blt293eea581807678a/blt02bcbffa2bf460b5/65df44a50f1d35dffdca4995/EN-US-SPIKE-Prime-Python-Programs_Feb-2024.pdf?locale=en-us</a><br />
+</li>
+<li>Repository (code and docs): <a
+href="https://github.com/agent6/SpikePrime2025FLL"
+class="uri">https://github.com/agent6/SpikePrime2025FLL</a><br />
+</li>
+<li>Lesson site root: <a
+href="https://agent6.github.io/SpikePrime2025FLL/lessons/"
+class="uri">https://agent6.github.io/SpikePrime2025FLL/lessons/</a></li>
+</ul>
+</body>
+</html>

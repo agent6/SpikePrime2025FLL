@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-19-start-sensing</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1 id="lesson-19-start-sensing-force-sensor-conditions">Lesson 19 –
+Start Sensing (Force Sensor &amp; Conditions)</h1>
+<blockquote>
+<p>Based on the LEGO Education lesson “Start Sensing”<br />
+Original: <a
+href="https://education.lego.com/en-us/lessons/spike-python-u3-sensor-control/spike-python-u3l1-start-sensing/"
+class="uri">https://education.lego.com/en-us/lessons/spike-python-u3-sensor-control/spike-python-u3l1-start-sensing/</a></p>
+</blockquote>
+<h2 id="question-to-investigate">Question to Investigate</h2>
+<ul>
+<li>How can <strong>sensors</strong> interact with or control
+<strong>motors</strong>?</li>
+</ul>
+<p>Time: ~45 minutes<br />
+Level: Beginner (Grades 6–8)</p>
+<hr />
+<h2 id="prepare">Prepare</h2>
+<ul>
+<li>Ensure SPIKE Prime hubs are <strong>charged</strong>, especially if
+using Bluetooth.</li>
+<li>Each group needs:
+<ul>
+<li>1 hub</li>
+<li>1 motor (e.g., on <code>port.A</code>)</li>
+<li>1 <strong>force sensor</strong> (e.g., on <code>port.B</code>)</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="engage-freeze-dance-with-a-sensor-5-min">Engage – Freeze Dance
+with a Sensor (5 min)</h2>
+<p>Whole class activity:</p>
+<ol type="1">
+<li>Play a quick <strong>freeze dance</strong> game.</li>
+<li>Hold up a <strong>force sensor</strong> and explain:
+<ul>
+<li>Students can only move when you are <strong>pressing</strong> the
+sensor button.</li>
+<li>They must <strong>freeze</strong> when you <strong>release</strong>
+it.</li>
+</ul></li>
+<li>Make it obvious when you push and release the button.</li>
+</ol>
+<p>Discuss:</p>
+<ul>
+<li>The sensor is providing <strong>information</strong> that changes
+behavior.</li>
+<li>Ask: “How do you think sensors work?” and “How could a sensor
+control a robot’s movement?”</li>
+</ul>
+<hr />
+<h2 id="explore-push-start-stop-20-min">Explore – Push, Start, Stop (20
+min)</h2>
+<p>Students will control a motor using the force sensor.</p>
+<ol type="1">
+<li>In the SPIKE App Knowledge Base, open:
+<ul>
+<li>GETTING STARTED → <strong>7. Sensor Control</strong> (force sensor
+intro).</li>
+</ul></li>
+<li>Open a <strong>new Python project</strong> and clear the
+canvas.</li>
+<li>Connect the hub:
+<ul>
+<li>Plug the motor into <code>port.A</code>.</li>
+<li>Plug the force sensor into <code>port.B</code> (or another port;
+adjust code as needed).</li>
+</ul></li>
+</ol>
+<p>Brainstorm <strong>pseudocode</strong>:</p>
+<ul>
+<li>Import force sensor, motor, and hub.</li>
+<li>Wait for <strong>sensor press</strong>.</li>
+<li>Turn motor on.</li>
+<li>Wait for <strong>sensor release</strong>.</li>
+<li>Turn motor off.</li>
+</ul>
+<h3 id="sample-code-press-to-start-release-to-stop">Sample Code – Press
+to Start, Release to Stop</h3>
+<p>Have students type and run:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> force_sensor</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_force_sensor_pressed():</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># collect input from force sensor</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> force_sensor.pressed(port.B)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_force_sensor_not_pressed():</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># collect input from force sensor</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">not</span> force_sensor.pressed(port.B)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wait until the force sensor is pressed</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(is_force_sensor_pressed)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    motor.run(port.A, <span class="dv">750</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wait until the force sensor is not pressed</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(is_force_sensor_not_pressed)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.A)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>When the force sensor is <strong>pressed</strong>, the motor starts
+at 750 degrees/second.</li>
+<li>It continues until the sensor is <strong>released</strong>, then the
+motor stops.</li>
+<li>Walk through each line so students see how sensor input triggers
+motor actions.</li>
+</ul>
+<p>Now <strong>invert</strong> the logic: motor runs first, then stops
+on button press.</p>
+<h3 id="sample-code-run-until-pressed">Sample Code – Run Until
+Pressed</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> force_sensor</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_force_sensor_pressed():</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># collect input from force sensor</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> force_sensor.pressed(port.B)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># turn on motor</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    motor.run(port.A, <span class="dv">1000</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wait until the force sensor is pressed</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(is_force_sensor_pressed)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># stop motor</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.A)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Key idea:</p>
+<ul>
+<li>Moving <code>motor.run(...)</code> <strong>before</strong> the
+<code>await runloop.until(...)</code> call changes the behavior:
+<ul>
+<li>Motor starts immediately.</li>
+<li>Program waits for the <strong>press</strong> to stop it.</li>
+</ul></li>
+<li>The “not pressed” helper is no longer needed in this version.</li>
+</ul>
+<p>Let students experiment:</p>
+<ul>
+<li>Different ports (<code>port.C</code>, <code>port.D</code>,
+etc.).</li>
+<li>Different speeds (positive/negative values).</li>
+</ul>
+<hr />
+<h2 id="explain-using-sensors-to-control-motors-5-min">Explain – Using
+Sensors to Control Motors (5 min)</h2>
+<p>Whole class questions:</p>
+<ul>
+<li>How can you use a <strong>sensor</strong> to control a motor’s
+actions?</li>
+<li>What are different ways to use or program a <strong>force
+sensor</strong>?</li>
+<li>Why don’t we set a <strong>time</strong> or
+<strong>distance</strong> for the motor here?
+<ul>
+<li>(Hint: the sensor acts as the <strong>stop condition</strong>.)</li>
+</ul></li>
+<li>What kinds of <strong>errors</strong> might happen (wrong port,
+missing import, etc.)?</li>
+</ul>
+<p>Clarify:</p>
+<ul>
+<li>The force sensor is read using
+<code>force_sensor.pressed(port.B)</code>.</li>
+<li><code>runloop.until(...)</code> waits for a <strong>condition
+function</strong> to return <code>True</code>.</li>
+<li>Sensors + conditions let us replace fixed timings with <strong>real
+feedback</strong>.</li>
+</ul>
+<hr />
+<h2 id="elaborate-print-messages-simple-games-10-min">Elaborate – Print
+Messages &amp; Simple Games (10 min)</h2>
+<p>Introduce printing to the <strong>console</strong>.</p>
+<p>Start from the second example and add a <code>print()</code>
+line:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> force_sensor</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_force_sensor_pressed():</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># collect input from force sensor</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> force_sensor.pressed(port.B)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># turn on motor</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    motor.run(port.A, <span class="dv">1000</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wait until the force sensor is pressed</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(is_force_sensor_pressed)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># stop motor</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    motor.stop(port.A)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print Hello! in the console</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>What happens when <code>"Hello!"</code> is printed?</li>
+<li>How can print messages help:
+<ul>
+<li>Explain what the program is doing.</li>
+<li>Make the program more fun.</li>
+<li>Debug (see where the program got to).</li>
+</ul></li>
+</ul>
+<p>Debugging reminder:</p>
+<ul>
+<li>Printed text must be in <strong>quotes</strong> and inside
+parentheses:
+<ul>
+<li><code>print("text")</code> or <code>print('text')</code>.</li>
+</ul></li>
+</ul>
+<p>Challenge:</p>
+<ul>
+<li>Create a <strong>question‑and‑answer game</strong>:
+<ul>
+<li>One student pushes the button to answer.</li>
+<li>The correct answer appears in the console (or multiple messages
+print).</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="evaluate-reflection-5-min">Evaluate – Reflection (5 min)</h2>
+<p>Teacher observation:</p>
+<ul>
+<li>What are some ways students programmed the force sensor to
+work?</li>
+<li>How did the sensor and motor <strong>interact</strong>?</li>
+<li>What creative uses of <code>print()</code> did they come up
+with?</li>
+</ul>
+<p>Student self‑assessment (journal):</p>
+<ul>
+<li>What did you learn today about using a <strong>force
+sensor</strong>?</li>
+<li>When is it useful to use the <code>print()</code> function?</li>
+<li>What characteristics of a <strong>good teammate</strong> did you
+display today?</li>
+<li>Rate yourself 1–3 on <strong>time management</strong>.</li>
+<li>Rate yourself 1–3 on <strong>materials (parts)
+management</strong>.</li>
+</ul>
+</body>
+</html>

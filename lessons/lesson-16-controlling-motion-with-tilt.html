@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-16-controlling-motion-with-tilt</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1
+id="lesson-16-controlling-motion-with-tilt-motion-sensor-conditions">Lesson
+16 – Controlling Motion with Tilt (Motion Sensor &amp; Conditions)</h1>
+<blockquote>
+<p>Based on the LEGO Education lesson “Controlling Motion with
+Tilt”<br />
+Original: <a
+href="https://education.lego.com/en-us/lessons/spike-python-u5-playing-games-with-simple-conditions/spike-python-u5l1-controlling-motion-with-tilt/"
+class="uri">https://education.lego.com/en-us/lessons/spike-python-u5-playing-games-with-simple-conditions/spike-python-u5l1-controlling-motion-with-tilt/</a></p>
+</blockquote>
+<h2 id="goals">Goals</h2>
+<ul>
+<li>Explore <strong>conditional statements</strong> in Python using the
+hub motion sensor.</li>
+<li>Understand how the motion sensor detects <strong>gestures</strong>
+and <strong>orientation</strong>.</li>
+<li>Use <code>if</code> logic to react to taps and tilts with images,
+sounds, and text.</li>
+</ul>
+<p>Time: ~45 minutes<br />
+Level: Beginner (Grades 6–8)</p>
+<hr />
+<h2 id="prepare">Prepare</h2>
+<ul>
+<li>Make sure SPIKE Prime hubs are charged (especially when using
+Bluetooth).</li>
+<li>Each group needs:
+<ul>
+<li>A SPIKE Prime hub.</li>
+<li>Access to the SPIKE App Python canvas.</li>
+<li>A small set of bricks for the warm‑up:
+<ul>
+<li>1 magenta frame.</li>
+<li>3 different yellow elements.</li>
+<li>3 different red elements.</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="engage-condition-warmup-5-min">Engage – Condition Warm‑Up (5
+min)</h2>
+<ol type="1">
+<li>Place the <strong>magenta frame</strong> on a sheet of paper. Spread
+the yellow and red elements <strong>outside</strong> the frame.</li>
+<li>Explain: elements <strong>inside</strong> the frame are
+<strong>true</strong> (match the condition), outside the frame are
+<strong>false</strong>.</li>
+<li>Run rounds with different conditions, clearing the frame each time:
+<ul>
+<li>Round 1: “The condition is <strong>red</strong>.”</li>
+<li>Round 2: “The condition is <strong>larger than a 2×2
+brick</strong>.”</li>
+<li>Round 3: “The condition is <strong>not a traditional brick
+shape</strong>.”</li>
+</ul></li>
+<li>Discuss:
+<ul>
+<li>What is a <strong>conditional statement</strong>?</li>
+<li>Introduce <strong>Boolean</strong> values: <code>True</code> and
+<code>False</code>.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="explore-tap-for-action-gestures-20-min">Explore – Tap for Action
+(Gestures, 20 min)</h2>
+<p>Students will create simple conditional statements using the motion
+sensor.</p>
+<ol type="1">
+<li>Open a <strong>new Python project</strong> in the SPIKE App and
+clear the canvas.</li>
+<li>Connect the hub.</li>
+<li>Discuss: “How can we move the hub in our hand?” (tap, double tap,
+shake, etc.)</li>
+<li>Write <strong>pseudocode</strong> for a “tap to show image” program:
+<ul>
+<li>Import motion sensor.</li>
+<li>If hub is tapped → show an image on the light matrix.</li>
+</ul></li>
+</ol>
+<h3 id="sample-code-tap-to-show-image">Sample Code – Tap to Show
+Image</h3>
+<p>Have students type and run:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> light_matrix, motion_sensor</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> if_tapped():</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the hub is tapped, return True</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> motion_sensor.gesture() <span class="op">==</span> motion_sensor.TAPPED</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Wait until the hub is tapped to show a sad face</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(if_tapped)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    light_matrix.show_image(light_matrix.IMAGE_SAD)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Stop Please&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>This is a <strong>conditional</strong> program: “if the hub is
+tapped, then show a sad face.”</li>
+<li><code>==</code> is a <strong>comparison</strong>, not an
+assignment.</li>
+<li>If the condition is never met, the image never appears.</li>
+</ul>
+<p>Ask students to experiment with different gestures:</p>
+<ul>
+<li><code>motion_sensor.TAPPED</code></li>
+<li><code>motion_sensor.DOUBLE_TAPPED</code></li>
+<li><code>motion_sensor.SHAKEN</code></li>
+<li><code>motion_sensor.FALLING</code></li>
+<li><code>motion_sensor.UNKNOWN</code></li>
+</ul>
+<p>They can refer to the Tufts SPIKE 3 docs:<br />
+<a href="https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html"
+class="uri">https://tuftsceeo.github.io/SPIKEPythonDocs/SPIKE3.html</a></p>
+<hr />
+<h2 id="explore-tilt-for-action-orientation-15-min">Explore – Tilt for
+Action (Orientation, 15 min)</h2>
+<p>Now students will use <strong>orientation</strong> instead of
+gestures.</p>
+<h3 id="sample-code-tilt-to-show-arrow">Sample Code – Tilt to Show
+Arrow</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> light_matrix, motion_sensor</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> app <span class="im">import</span> sound</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> face_up():</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return True if the hub is oriented USB port up</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> motion_sensor.up_face() <span class="op">==</span> motion_sensor.BACK</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.until(face_up)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    light_matrix.show_image(light_matrix.IMAGE_ARROW_N)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;I am awake&quot;</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> sound.play(<span class="st">&quot;Applause 1&quot;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>The condition is “hub USB side is facing up”.</li>
+<li>Only when that condition is <strong>true</strong> do we see the
+arrow, print text, and play a sound.</li>
+<li>If the hub already starts in that orientation, the action may
+trigger immediately.</li>
+</ul>
+<p>Orientation options (which side is facing up):</p>
+<ul>
+<li>Speaker side → <code>motion_sensor.FRONT</code></li>
+<li>USB side → <code>motion_sensor.BACK</code></li>
+<li>A/C/E ports → <code>motion_sensor.LEFT</code></li>
+<li>B/D/F ports → <code>motion_sensor.RIGHT</code></li>
+<li>Light matrix side → <code>motion_sensor.TOP</code></li>
+<li>Battery side → <code>motion_sensor.BOTTOM</code></li>
+</ul>
+<p>Encourage students to change the orientation condition and add:</p>
+<ul>
+<li>Different images.</li>
+<li>Different sounds.</li>
+<li>Extra <code>print()</code> messages.</li>
+</ul>
+<hr />
+<h2 id="explain-make-the-logic-visible-5-min">Explain – Make the Logic
+Visible (5 min)</h2>
+<p>Whole‑group questions:</p>
+<ul>
+<li>What is a <strong>conditional statement</strong> in a program?</li>
+<li>What does <code>if</code> do?</li>
+<li>Why are the lines after <code>if</code>
+<strong>indented</strong>?</li>
+<li>How does the <strong>motion sensor</strong> work?</li>
+<li>What different conditions can you set for the motion sensor?</li>
+</ul>
+<p>Let a few students show their favorite versions on the hub.</p>
+<hr />
+<h2 id="elaborate-story-game-with-motion-10-min">Elaborate – Story Game
+with Motion (10 min)</h2>
+<p>Challenge: create a <strong>short story game</strong> that uses the
+motion sensor to fill in a blank.</p>
+<p>Example as pseudocode:</p>
+<ul>
+<li><code>print("One day Jane was walking through the park. She looked up.")</code></li>
+<li>Player tilts the hub up.</li>
+<li>Ghost image appears.</li>
+<li>Sound plays.</li>
+<li><code>print("Then she woke up and realized it was a dream.")</code></li>
+</ul>
+<p>Guidelines:</p>
+<ul>
+<li>Write the story first as <strong>pseudocode</strong>.</li>
+<li>Use <code>print()</code> for the story text.</li>
+<li>Use at least one <strong>gesture or orientation</strong>
+condition.</li>
+<li>Include code <strong>comments</strong> explaining what each part
+does.</li>
+</ul>
+<p>Have groups share their story games and reflect on different ways the
+motion sensor can be used.</p>
+<hr />
+<h2 id="evaluate-reflection-and-checklist-5-min">Evaluate – Reflection
+and Checklist (5 min)</h2>
+<p>Teacher observation:</p>
+<ul>
+<li>How do conditional statements work in students’ programs?</li>
+<li>How are they using the motion sensor (gestures, orientation)?</li>
+<li>Are they reading and fixing console error messages?</li>
+</ul>
+<p>Student self‑assessment (journal or discussion):</p>
+<ul>
+<li>What did you learn today about using <strong>conditional
+statements</strong>?</li>
+<li>What <strong>good teammate</strong> behaviors did you show?</li>
+<li>Rate yourself 1–3 on <strong>time management</strong>.</li>
+<li>Rate yourself 1–3 on <strong>materials/parts
+management</strong>.</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lesson-20-new-moves-with-motors</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="sidebar.js" defer></script>
+</head>
+<body>
+<h1 id="lesson-20-new-moves-with-motors-degrees-positions">Lesson 20 –
+New Moves with Motors (Degrees &amp; Positions)</h1>
+<blockquote>
+<p>Based on the LEGO Education lesson “New Moves with Motors”<br />
+Original: <a
+href="https://education.lego.com/en-us/lessons/get-moving-with-motors/new-moves-with-motors/"
+class="uri">https://education.lego.com/en-us/lessons/get-moving-with-motors/new-moves-with-motors/</a></p>
+</blockquote>
+<h2 id="question-to-investigate">Question to Investigate</h2>
+<ul>
+<li>How do robots move <strong>precisely</strong>?</li>
+</ul>
+<p>Time: ~45 minutes<br />
+Level: Beginner (Grades 6–8)</p>
+<hr />
+<h2 id="prepare">Prepare</h2>
+<ul>
+<li>Ensure SPIKE Prime hubs are <strong>charged</strong>, especially if
+using Bluetooth.</li>
+<li>Students should have already built the <strong>Getting Started 2:
+Motors and Sensors</strong> model (through step 19, used in “Making
+Moves with Motors”).</li>
+<li>Each group needs:
+<ul>
+<li>Hub with at least one motor on <code>port.A</code>.</li>
+<li>A wheel (5.6 cm diameter) attached to the motor.</li>
+</ul></li>
+</ul>
+<p>Note: A 5.6 cm wheel travels about <strong>17.6 cm per 360°
+rotation</strong>.</p>
+<hr />
+<h2 id="engage-how-far-is-one-rotation">1. Engage – How Far Is One
+Rotation?</h2>
+<p>Using a SPIKE tire, ask:</p>
+<ul>
+<li>How could we measure how far the tire travels in <strong>one
+rotation</strong>?</li>
+<li>What different methods could we use?</li>
+</ul>
+<p>Prompt students to think of the wheel as a
+<strong>circle</strong>:</p>
+<ul>
+<li>Circumference = π × diameter.</li>
+<li>For a 5.6 cm wheel, one rotation ≈ 17.6 cm.</li>
+</ul>
+<p>Discuss:</p>
+<ul>
+<li>If we have a robot with wheels, how can we code the motors to move a
+<strong>specific distance</strong>, not just “for 2 seconds”?</li>
+<li>How might we program:
+<ul>
+<li>0.5 rotation (180°),</li>
+<li>1 rotation (360°),</li>
+<li>2 rotations (720°)?</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="explore-run-single-motor-for-degrees">2. Explore – Run Single
+Motor for Degrees</h2>
+<p>Goal: use <strong>degrees</strong> to control how far a motor
+turns.</p>
+<p>Pseudocode for one full circle:</p>
+<ul>
+<li>Import motor.</li>
+<li>Turn motor on.</li>
+<li>Move motor <strong>360 degrees</strong>.</li>
+</ul>
+<p>Steps:</p>
+<ol type="1">
+<li>Open a new Python project in the SPIKE App.</li>
+<li>Clear any existing code and connect the hub.</li>
+<li>Plug a motor into <code>port.A</code>.</li>
+</ol>
+<h3 id="sample-code-degrees">Sample Code – Degrees</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A for 360 degrees at 720 degrees per second.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_for_degrees(port.A, <span class="dv">360</span>, <span class="dv">720</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Discuss:</p>
+<ul>
+<li>Show students the <strong>position marker</strong> on the
+motor.</li>
+<li>Line the marker up at a visible “0°” starting point.</li>
+<li>Run the program and see if it returns to the same position.</li>
+</ul>
+<p>Experiment:</p>
+<ul>
+<li>Try different degree values (small and large).</li>
+<li>Try <strong>negative</strong> degrees:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run a motor on port A for -360 degrees at 720 degrees per second.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> motor.run_for_degrees(port.A, <span class="op">-</span><span class="dv">360</span>, <span class="dv">720</span>)</span></code></pre></div>
+<p>Ask:</p>
+<ul>
+<li>What changed when you used a negative value? (Direction
+reversed.)</li>
+<li>What happens when you use a degree value <strong>greater than
+360</strong>?</li>
+</ul>
+<p>Discuss what students discovered.</p>
+<hr />
+<h2 id="explore-run-single-motor-to-position">3. Explore – Run Single
+Motor to Position</h2>
+<p>Now use <strong>absolute position</strong> instead of “move this many
+degrees”.</p>
+<ol type="1">
+<li>Align the motor marker to <strong>0°</strong>.</li>
+<li>Discuss: How can we program the motor to move to a <strong>specific
+position</strong> and stop exactly there?</li>
+</ol>
+<h3 id="sample-code-to-absolute-position">Sample Code – To Absolute
+Position</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A to 0 degrees at 720 degrees per second.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">0</span>, <span class="dv">720</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>If the motor starts at 0°, it won’t move.</p>
+<p>Ask students to:</p>
+<ul>
+<li>Move the motor away from 0°.</li>
+<li>Run the program:
+<ul>
+<li>The motor moves back to 0° along the <strong>shortest
+path</strong>.</li>
+</ul></li>
+</ul>
+<p>Run several times from different starting positions and observe:</p>
+<ul>
+<li>The motor does not always rotate the same direction/amount.</li>
+<li>It always takes the <strong>shortest path</strong> back to the
+target.</li>
+</ul>
+<p>Ask:</p>
+<ul>
+<li>What is the <strong>longest</strong> move a motor can make to return
+to 0° along the shortest path?</li>
+</ul>
+<h3 id="sample-code-multiple-positions">Sample Code – Multiple
+Positions</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A to 0 degrees at 720 degrees per second.</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">0</span>, <span class="dv">720</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.sleep_ms(<span class="dv">2000</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Move to 90 degrees in the clockwise direction.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">90</span>, <span class="dv">720</span>, direction<span class="op">=</span>motor.CLOCKWISE)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Let students change the <strong>target positions</strong> (e.g.,
+180°, 270°, 360°) and see:</p>
+<ul>
+<li>How direction is chosen.</li>
+<li>How absolute positions can represent precise angles for
+mechanisms.</li>
+</ul>
+<p>Remind: errors are normal while exploring—use the console
+messages.</p>
+<hr />
+<h2 id="explain-precision-and-when-to-use-degrees-vs-position">4.
+Explain – Precision and When to Use Degrees vs Position</h2>
+<p>Have students share example programs for both
+<strong>run_for_degrees</strong> and
+<strong>run_to_absolute_position</strong>.</p>
+<p>Discussion prompts:</p>
+<ul>
+<li>How does <code>motor.run_for_degrees</code> work? When is it
+useful?</li>
+<li>When would you prefer <code>run_for_degrees</code> vs
+<code>run_to_absolute_position</code>?</li>
+<li>Why do degrees/positions give more <strong>precision</strong> than
+programming for a number of seconds?</li>
+<li>What happened when you used a degree value larger than 360?</li>
+<li>How can you <strong>calculate</strong> degrees needed for a certain
+distance? (Use wheel circumference and ratios.)</li>
+<li>Why does the motor not move if you start at 0° and command it to go
+to 0°?</li>
+<li>How can you program the motor to move in the <strong>opposite
+direction</strong>? (Negative degrees, or <code>direction=</code>.)</li>
+</ul>
+<hr />
+<h2 id="elaborate-debugging-challenges">5. Elaborate – Debugging
+Challenges</h2>
+<p>Work together to debug the following snippets. Have students run each
+one and read the <strong>console errors</strong> (or observed
+behavior).</p>
+<h3 id="debug-1-what-is-missing">Debug 1 – What Is Missing?</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A to 0 degrees at 720 degrees per second.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">0</span>, <span class="dv">720</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.sleep_ms(<span class="dv">2000</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">90</span>, <span class="dv">720</span>, direction<span class="op">=</span>motor.CLOCKWISE)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Issue:</p>
+<ul>
+<li><code>port</code> is not defined.</li>
+<li>Fix: add <code>from hub import port</code>.</li>
+</ul>
+<h3 id="debug-2-what-number-is-wrong">Debug 2 – What Number Is
+Wrong?</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A to 0 degrees at 7200 degrees per second.</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">0</span>, <span class="dv">7200</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> runloop.sleep_ms(<span class="dv">2000</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> motor.run_to_absolute_position(port.A, <span class="dv">90</span>, <span class="dv">720</span>, direction<span class="op">=</span>motor.CLOCKWISE)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Issue:</p>
+<ul>
+<li>Velocity <code>7200</code> is outside the allowed range (–1000 to
+1000).</li>
+<li>No error is thrown, but the motor speed is clamped to within the
+valid range.</li>
+</ul>
+<h3 id="debug-3-what-is-wrong">Debug 3 – What Is Wrong?</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> motor</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hub <span class="im">import</span> port</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> runloop</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a motor on port A to 0 degrees at 720 degrees per second.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> Motor.run_to_absolute_position(port.A, <span class="dv">0</span>, <span class="dv">720</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>runloop.run(main())</span></code></pre></div>
+<p>Issue:</p>
+<ul>
+<li><code>Motor</code> is capitalized; Python is
+<strong>case‑sensitive</strong>.</li>
+<li>Error: <code>NameError: name 'Motor' isn't defined</code>.</li>
+<li>Fix: use <code>motor.run_to_absolute_position(...)</code>.</li>
+</ul>
+<hr />
+<h2 id="evaluate-precision-and-teamwork">6. Evaluate – Precision and
+Teamwork</h2>
+<p>Teacher observation:</p>
+<ul>
+<li>What different ways did students program their motors to move?</li>
+<li>Which methods (time, degrees, position) allow for the most
+<strong>precise</strong> movements?</li>
+<li>How did they use positions for exact stops?</li>
+</ul>
+<p>Student self‑assessment (journal):</p>
+<ul>
+<li>What did you learn today that will help you program robots to move
+with <strong>precision</strong>?</li>
+<li>What characteristics of a <strong>good teammate</strong> did you
+show?</li>
+<li>Rate yourself 1–3 on <strong>time management</strong>.</li>
+<li>Rate yourself 1–3 on <strong>materials (parts)
+management</strong>.</li>
+</ul>
+</body>
+</html>
